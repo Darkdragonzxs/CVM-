@@ -55,8 +55,8 @@ if (isUserPremium()) {
   const serverSwitch = document.getElementById('server-switch');
   if (serverSwitch) {
     serverSwitch.innerHTML = `
-      <button data-url="https://hungry-hippo.stilla-rrms-wlwv-k12-or-us.workers.dev/" class="selected">Main 🟢</button>
-      <button data-url="https://rubber-ducky.stilla-rrms-wlwv-k12-or-us.workers.dev/">1 🟢</button>
+      <button data-url="https://hungry-hippo.cvm.rest/" class="selected">Main 🟢</button>
+      <button data-url="https://rubber-ducky.cvm.rest/">1 🟢</button>
     `;
   }
 
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const userEl   = document.getElementById("auth-username");
   const passEl   = document.getElementById("auth-password");
   const errorEl  = document.getElementById("auth-error");
-  const WORKER_BASE = "https://cvm-accounts.stilla-rrms-wlwv-k12-or-us.workers.dev";
+  const WORKER_BASE = "https://account.cvm.rest";
 
   let isSignup = false;
   let started  = false;

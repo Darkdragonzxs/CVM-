@@ -203,7 +203,6 @@ function initApp() {
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3) HOOKING UP AUTH FLOW (unchanged)
-document.addEventListener("DOMContentLoaded", () => {
   const overlay = document.getElementById("overlay");
   const guestBtn = document.getElementById("auth-guest");
   const submit = document.getElementById("auth-submit");

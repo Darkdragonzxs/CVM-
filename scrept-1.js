@@ -1,7 +1,5 @@
 import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-
 ////////////////////////////////////////////////////////////////////////////////
 // 1) YOUR PREMIUM CHECKER (unchanged)
 function isUserPremium() {
@@ -13,16 +11,15 @@ function isUserPremium() {
 ////////////////////////////////////////////////////////////////////////////////
 // 2) EVERYTHING THAT USED TO LIVE IN DOMContentLoaded → initApp()
 //    We only modify the “start()” function inside initApp; everything else stays.
-
 function initApp() {
-  // ======== apply premium theme (unchanged) ========
+  // ======== apply premium theme ========
   if (isUserPremium()) {
     document.documentElement.classList.add("premium-theme");
   } else {
     document.documentElement.classList.remove("premium-theme");
   }
 
-  // ======== Replace content if user is premium (unchanged) ========
+  // ======== Replace content if user is premium ========
   if (isUserPremium()) {
     const warningH2 = document.querySelector('#warning h2');
     if (warningH2) {
@@ -69,9 +66,8 @@ function initApp() {
     }
   }
 
-  // ======== grab our selected serverUrl (unchanged) ========
+  // ======== grab our selected serverUrl ========
   let serverUrl = document.querySelector('#server-switch button.selected').dataset.url;
-
   document.querySelectorAll('#server-switch button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#server-switch button')
@@ -81,7 +77,7 @@ function initApp() {
     });
   });
 
-  // ======== fullscreen toggle (unchanged) ========
+  // ======== fullscreen toggle ========
   const fsWrapper = document.getElementById('fullscreen-timer-wrapper');
   const fsTimer = document.getElementById('fullscreen-timer');
   const toggleBtn = document.getElementById('toggle-timer-btn');
@@ -91,14 +87,13 @@ function initApp() {
     toggleBtn.textContent = hidden ? '<' : '>';
   });
 
-  // ======== main start() — THIS IS WHERE WE SWAP IN THE SDK LOGIC ========
+  // ======== main start() — SDK/Proxy logic here ========
   async function start() {
-    // show black-screen notification after 5s (unchanged)
+    // show black-screen notification after 5s
     setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
 
     try {
-      // 1) We POST to the worker (api-main.cvm.rest, etc.) exactly as before,
-      //    but now the worker returns { sessionId, adminToken } instead of { embed_url }.
+      // 1) POST to your Worker (e.g. "https://api-main.cvm.rest/") → get { sessionId, adminToken }
       const res = await fetch(serverUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -106,11 +101,10 @@ function initApp() {
       });
       const { sessionId, adminToken } = await res.json();
 
-      // 2) Build the “proxied” embed URL that never mentions hyperbeam.com
-      //    (the worker’s GET /vm/:sessionId will rewrite under the hood)
+      // 2) Build proxied URL (never exposes hyperbeam.com)
       const proxiedEmbedUrl = `${serverUrl}vm/${sessionId}?token=${adminToken}`;
 
-      // 3) Call Hyperbeam SDK with that proxied URL, passing adminToken in options
+      // 3) Initialize Hyperbeam with that proxied URL
       await Hyperbeam(
         document.getElementById("hyperbeam-container"),
         proxiedEmbedUrl,
@@ -120,14 +114,13 @@ function initApp() {
         }
       );
     } catch (err) {
-      // if anything fails—could be a proxy error, CORS issue, or Hyperbeam error—show the user.
       const e = document.getElementById('error-message');
       e.style.display = 'block';
       e.textContent = "Unable to launch CVM. Either a proxy issue, rate‐limit, or your network is blocking the VM.";
     }
   }
 
-  // ======== overlay & timer wiring (unchanged) ========
+  // ======== overlay & timer wiring ========
   let minuteAlertShown = false, timeoutExpired = false;
   document.getElementById('acknowledge-checkbox').addEventListener('change', e =>
     document.getElementById('close-warning').disabled = !e.target.checked
@@ -166,7 +159,7 @@ function initApp() {
     if (inFS) { fsTimer.style.display = 'inline'; toggleBtn.textContent = '<'; }
   });
 
-  // ======== timer logic (unchanged) ========
+  // ======== timer logic ========
   function startTimer() {
     let t = isUserPremium() ? 40 * 60 : 20 * 60;
     updateTimerDisplay(t);
@@ -202,19 +195,22 @@ function initApp() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 3) HOOKING UP AUTH FLOW (unchanged)
+// 3) HOOKING UP AUTH FLOW (moved inside same DOMContentLoaded)
+////////////////////////////////////////////////////////////////////////////////
+
+document.addEventListener("DOMContentLoaded", () => {
   const overlay = document.getElementById("overlay");
   const guestBtn = document.getElementById("auth-guest");
-  const submit = document.getElementById("auth-submit");
-  const toggle = document.getElementById("auth-toggle");
-  const titleEl = document.getElementById("auth-title");
-  const userEl = document.getElementById("auth-username");
-  const passEl = document.getElementById("auth-password");
-  const errorEl = document.getElementById("auth-error");
-  const WORKER_BASE = "https://account.cvm.rest"; // (unchanged)
+  const submit   = document.getElementById("auth-submit");
+  const toggle   = document.getElementById("auth-toggle");
+  const titleEl  = document.getElementById("auth-title");
+  const userEl   = document.getElementById("auth-username");
+  const passEl   = document.getElementById("auth-password");
+  const errorEl  = document.getElementById("auth-error");
+  const WORKER_BASE = "https://account.cvm.rest";
 
   let isSignup = false;
-  let started = false;
+  let started  = false;
 
   function finishAuth() {
     overlay.style.display = "none";
@@ -225,22 +221,26 @@ function initApp() {
     }
   }
 
+  // Auto-login if token exists
   if (localStorage.getItem("cvm_token")) {
     finishAuth();
   }
 
+  // Guest access
   guestBtn.addEventListener("click", finishAuth);
 
+  // Toggle login/signup UI
   toggle.addEventListener("click", () => {
     isSignup = !isSignup;
     titleEl.textContent = isSignup ? "Sign Up" : "Login";
-    submit.textContent = isSignup ? "Sign Up" : "Login";
-    toggle.textContent = isSignup
+    submit.textContent   = isSignup ? "Sign Up" : "Login";
+    toggle.textContent   = isSignup
       ? "Already have an account? Login"
       : "Don't have an account? Sign up";
     errorEl.textContent = "";
   });
 
+  // Login / Sign Up flow
   submit.addEventListener("click", async () => {
     const username = userEl.value.trim();
     const password = passEl.value;
@@ -265,5 +265,4 @@ function initApp() {
       errorEl.textContent = err.message;
     }
   });
-});
 });

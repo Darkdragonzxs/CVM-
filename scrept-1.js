@@ -94,31 +94,30 @@ function initApp() {
 
     try {
       // 1) POST to your Worker (e.g. "https://api-main.cvm.rest/") → get { sessionId, adminToken }
-      const res = await fetch(serverUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: "{}"
-      });
-      const { sessionId, adminToken } = await res.json();
+      try {
+  // 1) POST to your Worker; it now returns { embed_url }
+  const res = await fetch(serverUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: "{}"
+  });
+  if (!res.ok) throw new Error(`Worker responded ${res.status}`);
+  
+  // 2) Pull out embed_url directly
+  const { embed_url } = await res.json();
 
-      // 2) Build proxied URL (never exposes hyperbeam.com)
-      const proxiedEmbedUrl = `${serverUrl}vm/${sessionId}?token=${adminToken}`;
+  // 3) Initialize Hyperbeam with embed_url
+  await Hyperbeam(
+    document.getElementById("hyperbeam-container"),
+    embed_url,
+    { iframeAttributes: { allow: "fullscreen" } }
+  );
 
-      // 3) Initialize Hyperbeam with that proxied URL
-      await Hyperbeam(
-        document.getElementById("hyperbeam-container"),
-        proxiedEmbedUrl,
-        {
-          adminToken: adminToken,
-          iframeAttributes: { allow: "fullscreen" }
-        }
-      );
-    } catch (err) {
-      const e = document.getElementById('error-message');
-      e.style.display = 'block';
-      e.textContent = "Unable to launch CVM. Either a proxy issue, rate‐limit, or your network is blocking the VM.";
-    }
-  }
+} catch (err) {
+  const e = document.getElementById('error-message');
+  e.style.display = 'block';
+  e.textContent = "Unable to launch CVM. Either a proxy issue, rate-limit, or your network is blocking the VM.";
+}
 
   // ======== overlay & timer wiring ========
   let minuteAlertShown = false, timeoutExpired = false;
@@ -211,7 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let isSignup = false;
   let started  = false;
-
   function finishAuth() {
     overlay.style.display = "none";
     if (!started) {

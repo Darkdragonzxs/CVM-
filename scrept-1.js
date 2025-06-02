@@ -1,5 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
 import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js";
+
+document.addEventListener("DOMContentLoaded", () => {
 
 ////////////////////////////////////////////////////////////////////////////////
 // 1) YOUR PREMIUM CHECKER (unchanged)

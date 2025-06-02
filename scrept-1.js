@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -264,4 +265,5 @@ document.addEventListener("DOMContentLoaded", () => {
       errorEl.textContent = err.message;
     }
   });
+});
 });

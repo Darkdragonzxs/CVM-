@@ -10,7 +10,6 @@ function isUserPremium() {
 
 ////////////////////////////////////////////////////////////////////////////////
 // 2) EVERYTHING THAT USED TO LIVE IN DOMContentLoaded → initApp()
-//    We only modify the “start()” function inside initApp; everything else stays.
 function initApp() {
   // ======== apply premium theme ========
   if (isUserPremium()) {
@@ -93,34 +92,35 @@ function initApp() {
     setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
 
     try {
-      // 1) POST to your Worker (e.g. "https://api-main.cvm.rest/") → get { sessionId, adminToken }
-      try {
-  // 1) POST to your Worker; it now returns { embed_url }
-  const res = await fetch(serverUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: "{}"
-  });
-  if (!res.ok) throw new Error(`Worker responded ${res.status}`);
-  
-  // 2) Pull out embed_url directly
-  const { embed_url } = await res.json();
+      // 1) POST to your Worker; it now returns { embed_url }
+      const res = await fetch(serverUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: "{}"
+      });
+      if (!res.ok) throw new Error(`Worker responded ${res.status}`);
 
-  // 3) Initialize Hyperbeam with embed_url
-  await Hyperbeam(
-    document.getElementById("hyperbeam-container"),
-    embed_url,
-    { iframeAttributes: { allow: "fullscreen" } }
-  );
+      // 2) Pull out embed_url directly
+      const { embed_url } = await res.json();
 
-} catch (err) {
-  const e = document.getElementById('error-message');
-  e.style.display = 'block';
-  e.textContent = "Unable to launch CVM. Either a proxy issue, rate-limit, or your network is blocking the VM.";
-}
+      // 3) Initialize Hyperbeam with embed_url
+      await Hyperbeam(
+        document.getElementById("hyperbeam-container"),
+        embed_url,
+        { iframeAttributes: { allow: "fullscreen" } }
+      );
+
+    } catch (err) {
+      const e = document.getElementById('error-message');
+      e.style.display = 'block';
+      e.textContent = "Unable to launch CVM. Either a proxy issue, rate-limit, or your network is blocking the VM.";
+    }
+  }   // ← end of start()
 
   // ======== overlay & timer wiring ========
-  let minuteAlertShown = false, timeoutExpired = false;
+  let minuteAlertShown = false,
+    timeoutExpired = false;
+
   document.getElementById('acknowledge-checkbox').addEventListener('change', e =>
     document.getElementById('close-warning').disabled = !e.target.checked
   );
@@ -155,7 +155,10 @@ function initApp() {
     document.getElementById('hyperbeam-container')
       .classList.toggle('fullscreen-mode', inFS);
     fsWrapper.style.display = inFS ? 'flex' : 'none';
-    if (inFS) { fsTimer.style.display = 'inline'; toggleBtn.textContent = '<'; }
+    if (inFS) {
+      fsTimer.style.display = 'inline';
+      toggleBtn.textContent = '<';
+    }
   });
 
   // ======== timer logic ========
@@ -191,25 +194,25 @@ function initApp() {
     e.preventDefault();
     e.returnValue = "";
   }
-}
+
+} // ← end of initApp()
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3) HOOKING UP AUTH FLOW (moved inside same DOMContentLoaded)
-////////////////////////////////////////////////////////////////////////////////
-
 document.addEventListener("DOMContentLoaded", () => {
   const overlay = document.getElementById("overlay");
   const guestBtn = document.getElementById("auth-guest");
-  const submit   = document.getElementById("auth-submit");
-  const toggle   = document.getElementById("auth-toggle");
-  const titleEl  = document.getElementById("auth-title");
-  const userEl   = document.getElementById("auth-username");
-  const passEl   = document.getElementById("auth-password");
-  const errorEl  = document.getElementById("auth-error");
+  const submit = document.getElementById("auth-submit");
+  const toggle = document.getElementById("auth-toggle");
+  const titleEl = document.getElementById("auth-title");
+  const userEl = document.getElementById("auth-username");
+  const passEl = document.getElementById("auth-password");
+  const errorEl = document.getElementById("auth-error");
   const WORKER_BASE = "https://account.cvm.rest";
 
   let isSignup = false;
-  let started  = false;
+  let started = false;
+
   function finishAuth() {
     overlay.style.display = "none";
     if (!started) {
@@ -231,8 +234,8 @@ document.addEventListener("DOMContentLoaded", () => {
   toggle.addEventListener("click", () => {
     isSignup = !isSignup;
     titleEl.textContent = isSignup ? "Sign Up" : "Login";
-    submit.textContent   = isSignup ? "Sign Up" : "Login";
-    toggle.textContent   = isSignup
+    submit.textContent = isSignup ? "Sign Up" : "Login";
+    toggle.textContent = isSignup
       ? "Already have an account? Login"
       : "Don't have an account? Sign up";
     errorEl.textContent = "";

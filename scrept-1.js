@@ -122,6 +122,7 @@ function initApp() {
 
     // 3) Parse and validate embed_url
     const data = await res.json();
+    console.log("Server response data:", data);
     if (
       !data.embed_url ||
       typeof data.embed_url !== "string" ||

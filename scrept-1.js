@@ -126,7 +126,7 @@ function initApp() {
     if (
       !data.embed_url ||
       typeof data.embed_url !== "string" ||
-      !data.embed_url.startsWith("http")
+      !data.embed_url.startsWith("https")
     ) {
       throw new Error("Invalid embed_url received from server");
     }

@@ -114,26 +114,6 @@ function initApp() {
   }
 
   // ======== 2.5 Start the VM via SDK ========
-
-  // Example: count down from 20:00 in #timer element
-const timerElement = document.getElementById('timer');
-let totalSeconds = 20 * 60; // 20 minutes
-
-function updateTimer() {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  timerElement.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-  if (totalSeconds > 0) {
-    totalSeconds--;
-  } else {
-    clearInterval(timerInterval);
-    // Timer ended — do something here (disable buttons, show alert...)
-  }
-}
-
-const timerInterval = setInterval(updateTimer, 1000);
-updateTimer(); // initialize immediately
-  
   async function start() {
     // Show black-screen notification after 5 seconds
     setTimeout(() => {
@@ -153,16 +133,17 @@ updateTimer(); // initialize immediately
         body: JSON.stringify({ username, token: authToken })
       });
       const raw = await res.text(); // <— grab raw text
-      console.log("RAW response from Worker:", raw);
+console.log("RAW response from Worker:", raw);
 
-      let data;
-      try {
-        data = JSON.parse(raw);
-      } catch (err) {
-        throw new Error("Failed to parse JSON from Worker: " + err.message);
-      }
+let data;
+try {
+  data = JSON.parse(raw);
+} catch (err) {
+  throw new Error("Failed to parse JSON from Worker: " + err.message);
+}
       if (!res.ok) throw new Error(`Server error: ${res.status} ${res.statusText}`);
 
+      const data = await res.json();
       console.log("Server response data:", data);
 
       // 2.5.3 Validate embed_url
@@ -261,49 +242,161 @@ updateTimer(); // initialize immediately
   const notifYes = document.getElementById('notif-yes');
   if (notifYes) {
     notifYes.addEventListener('click', () => {
-      window.open("https://cvm.rest/premium", "_blank");
+      const blackNotif = document.getElementById('black-notif');
+      if (blackNotif) blackNotif.classList.remove('active');
+      const blackAlert = document.getElementById('black-alert');
+      if (blackAlert) blackAlert.classList.add('active');
     });
   }
 
-  // ======== 2.7 Timer (unchanged) ========
-  function startTimer() {
-    let timeLeft = isUserPremium() ? 2400 : 1800; // premium: 40min, free: 30min
+  const blackOk = document.getElementById('black-ok');
+  if (blackOk) {
+    blackOk.addEventListener('click', () => {
+      const blackAlert = document.getElementById('black-alert');
+      if (blackAlert) blackAlert.classList.remove('active');
+    });
+  }
 
-    function tick() {
-      if (timeLeft <= 0) {
+  const fsBtn = document.getElementById('fullscreen-btn');
+  if (fsBtn) {
+    fsBtn.addEventListener('click', async () => {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    });
+  }
+
+  document.addEventListener('fullscreenchange', () => {
+    const inFS = !!document.fullscreenElement;
+    const bottomBar = document.getElementById('bottom-bar');
+    if (bottomBar) bottomBar.style.display = inFS ? 'none' : 'flex';
+
+    const hbContainer = document.getElementById('hyperbeam-container');
+    if (hbContainer) hbContainer.classList.toggle('fullscreen-mode', inFS);
+
+    if (inFS) {
+      fsWrapper.style.display = 'flex';
+      fsTimer.style.display = 'inline';
+      toggleBtn.textContent = '<';
+    } else {
+      fsWrapper.style.display = 'none';
+    }
+  });
+
+  // ======== 2.7 Timer logic (unchanged) ========
+  function startTimer() {
+    let t = isUserPremium() ? 40 * 60 : 20 * 60;
+    updateTimerDisplay(t);
+    const iv = setInterval(() => {
+      if (t > 0) {
+        t--;
+        updateTimerDisplay(t);
+        if (t === 60 && !minuteAlertShown) {
+          minuteAlertShown = true;
+          const minuteWarn = document.getElementById('minute-warning');
+          if (minuteWarn) minuteWarn.classList.add('active');
+        }
+      } else {
+        clearInterval(iv);
         timeoutExpired = true;
-        window.addEventListener("beforeunload", blockUnload);
-        document.getElementById('timeout-warning').classList.add('active');
+        window.removeEventListener('beforeunload', blockUnload);
+        window.location.href = 'https://cvm.rest/';
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    const txt = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const timer = document.getElementById('timer');
+    const fsTimerEl = document.getElementById('fullscreen-timer');
+    if (timer) timer.textContent = txt;
+    if (fsTimerEl) fsTimerEl.textContent = txt;
+  }
+} // ─── end of initApp()
+
+////////////////////////////////////////////////////////////////////////////////
+// 3) HOOKING UP AUTH FLOW
+////////////////////////////////////////////////////////////////////////////////
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.getElementById("overlay");
+  const guestBtn = document.getElementById("auth-guest");
+  const submit   = document.getElementById("auth-submit");
+  const toggle   = document.getElementById("auth-toggle");
+  const titleEl  = document.getElementById("auth-title");
+  const userEl   = document.getElementById("auth-username");
+  const passEl   = document.getElementById("auth-password");
+  const errorEl  = document.getElementById("auth-error");
+  const WORKER_BASE = "https://account.cvm.rest";
+
+  let isSignup = false;
+  let started  = false;
+
+  function finishAuth() {
+    if (overlay) overlay.style.display = "none";
+    if (!started) {
+      started = true;
+      initApp();
+      window.addEventListener('beforeunload', blockUnload);
+    }
+  }
+
+  // Auto-login if token exists
+  if (localStorage.getItem("cvm_token")) {
+    finishAuth();
+  }
+
+  // Guest access
+  if (guestBtn) {
+    guestBtn.addEventListener("click", finishAuth);
+  }
+
+  // Toggle login/signup mode
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      isSignup = !isSignup;
+      if (titleEl) titleEl.textContent = isSignup ? "Sign Up" : "Log In";
+      if (toggle) toggle.textContent = isSignup ? "Already have an account? Log in" : "Don't have an account? Sign up";
+      if (passEl) passEl.style.display = isSignup ? "block" : "none";
+      if (errorEl) errorEl.textContent = "";
+    });
+  }
+
+  // Handle login/signup form submit
+  if (submit) {
+    submit.addEventListener("click", async () => {
+      if (errorEl) errorEl.textContent = "";
+      const username = userEl ? userEl.value.trim() : "";
+      const password = passEl ? passEl.value : "";
+      if (!username || (isSignup && !password)) {
+        if (errorEl) errorEl.textContent = "Please fill out all required fields.";
         return;
       }
 
-      // Show 1 min warning
-      if (timeLeft <= 60 && !minuteAlertShown) {
-        document.getElementById('minute-warning').classList.add('active');
-        minuteAlertShown = true;
+      const endpoint = isSignup ? "/signup" : "/login";
+      try {
+        const res = await fetch(WORKER_BASE + endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || "Failed to authenticate");
+        }
+        const data = await res.json();
+
+        localStorage.setItem("cvm_token", data.token);
+        localStorage.setItem("cvm_username", username);
+        localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
+
+        finishAuth();
+      } catch (err) {
+        if (errorEl) errorEl.textContent = err.message;
       }
-
-      // Update UI
-      const fsTimer = document.getElementById('fullscreen-timer');
-      if (fsTimer) {
-        const min = Math.floor(timeLeft / 60);
-        const sec = timeLeft % 60;
-        fsTimer.textContent = `${min}:${sec.toString().padStart(2, "0")}`;
-      }
-
-      timeLeft--;
-      setTimeout(tick, 1000);
-    }
-
-    tick();
+    });
   }
-
-  // ======== 2.8 Run init ========
-  // Show warning overlay and wait for acknowledgment
-  document.getElementById('warning').classList.add('active');
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// 3) START APP
-////////////////////////////////////////////////////////////////////////////////
-initApp();
+});

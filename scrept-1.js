@@ -139,21 +139,35 @@ function initApp() {
     }
 
     // 5) Initialize Hyperbeam
-    await Hyperbeam(
-      document.getElementById("hyperbeam-container"),
-      data.embed_url,
-      { iframeAttributes: { allow: "fullscreen" } }
-    );
-    console.log("SDK instance:", hyperbeamInstance);
+    try {
+      const errorElement = document.getElementById("error-message");
+if (errorElement) {
+  errorElement.style.display = "none";
+  errorElement.textContent = "";
+}
+  const query = new URL(data.embed_url).search;
+  const sessionId = data.sessionId;
+  const proxyUrl = `https://api-8.cvm.rest/vm/${sessionId}${query}`;
 
-  } catch (err) {
-    console.error("Failed to start CVM:", err);
-    const errorElement = document.getElementById("error-message");
-    if (errorElement) {
-      errorElement.style.display = "block";
-      errorElement.textContent =
-        "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
+  const hyperbeamInstance = await Hyperbeam(
+    document.getElementById("hyperbeam-container"),
+    proxyUrl,
+    {
+      iframeAttributes: {
+        allow: "fullscreen; microphone; camera; autoplay"
+      }
     }
+  );
+
+  console.log("SDK instance:", hyperbeamInstance);
+
+} catch (err) {
+  console.error("Failed to start CVM:", err);
+  const errorElement = document.getElementById("error-message");
+  if (errorElement) {
+    errorElement.style.display = "block";
+    errorElement.textContent =
+      "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
   }
 }
   // ======== Overlay & timer wiring ========

@@ -97,41 +97,63 @@ function initApp() {
   });
 
   // ======== Main start() — initialize Hyperbeam ========
-  async function start() {
-    // Show black-screen notification after 5s
-    setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
+ async function start() {
+  // Show the “black screen?” overlay after 5 seconds
+  setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
 
-    try {
-      // 1) POST to Worker → receive { embed_url }
-      const res = await fetch(serverUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: "{}"
-      });
-      if (!res.ok) {
-        throw new Error(`Worker responded with status ${res.status}`);
-      }
-      const { embed_url } = await res.json();
+  try {
+    // 1) Retrieve username and token from localStorage
+    const username  = localStorage.getItem("cvm_username") || "guest";
+    const authToken = localStorage.getItem("cvm_token")    || "";
 
-      // Validate embed_url
-      if (!embed_url || typeof embed_url !== "string") {
-        throw new Error("Invalid embed_url received from Worker");
-      }
+    // 2) POST to your Worker with payload
+    const res = await fetch(serverUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username,
+        token:    authToken
+      })
+    });
 
-      // 2) Initialize Hyperbeam with embed_url
-      await Hyperbeam(
-        document.getElementById("hyperbeam-container"),
-        embed_url,
-        { iframeAttributes: { allow: "fullscreen" } }
-      );
-    } catch (err) {
-      const e = document.getElementById('error-message');
-      e.style.display = 'block';
-      e.textContent = "Unable to launch CVM. Either a proxy issue, rate-limit, or your network is blocking the VM.";
-      console.error("Error in start():", err);
+    if (!res.ok) {
+      throw new Error(`Server error: ${res.status} ${res.statusText}`);
     }
-  } // ─── end of start()
 
+    // 3) Parse and validate embed_url
+    const data = await res.json();
+    if (
+      !data.embed_url ||
+      typeof data.embed_url !== "string" ||
+      !data.embed_url.startsWith("http")
+    ) {
+      throw new Error("Invalid embed_url received from server");
+    }
+
+    // 4) Clear any previous error message
+    const errorElement = document.getElementById("error-message");
+    if (errorElement) {
+      errorElement.style.display = "none";
+      errorElement.textContent = "";
+    }
+
+    // 5) Initialize Hyperbeam
+    await Hyperbeam(
+      document.getElementById("hyperbeam-container"),
+      data.embed_url,
+      { iframeAttributes: { allow: "fullscreen" } }
+    );
+
+  } catch (err) {
+    console.error("Failed to start CVM:", err);
+    const errorElement = document.getElementById("error-message");
+    if (errorElement) {
+      errorElement.style.display = "block";
+      errorElement.textContent =
+        "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
+    }
+  }
+}
   // ======== Overlay & timer wiring ========
   let minuteAlertShown = false,
       timeoutExpired = false;

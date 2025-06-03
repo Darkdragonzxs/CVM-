@@ -1,8 +1,8 @@
 import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js";
 
-// ─────────────────────────────────────────────────────────────────────────────
+////////////////////////////////////////////////////////////////////////////////
 // 1) GLOBAL FUNCTIONS
-// ─────────────────────────────────────────────────────────────────────────────
+////////////////////////////////////////////////////////////////////////////////
 
 // Warn user before leaving the page
 function blockUnload(e) {
@@ -10,25 +10,25 @@ function blockUnload(e) {
   e.returnValue = "";
 }
 
-// Check if user has premium flag in localStorage
+// Check if user is premium
 function isUserPremium() {
   const token = localStorage.getItem("cvm_token");
   if (!token) return false;
   return localStorage.getItem("cvm_premium") === "1";
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+////////////////////////////////////////////////////////////////////////////////
 // 2) MAIN APP SETUP
-// ─────────────────────────────────────────────────────────────────────────────
+////////////////////////////////////////////////////////////////////////////////
 function initApp() {
-  // ======== Apply premium theme ========
+  // ======== 2.1 Apply premium theme ========
   if (isUserPremium()) {
     document.documentElement.classList.add("premium-theme");
   } else {
     document.documentElement.classList.remove("premium-theme");
   }
 
-  // ======== Replace content if user is premium ========
+  // ======== 2.2 Replace content if user is premium ========
   if (isUserPremium()) {
     const warningH2 = document.querySelector('#warning h2');
     if (warningH2) {
@@ -75,7 +75,7 @@ function initApp() {
     }
   }
 
-  // ======== Grab selected server URL ========
+  // ======== 2.3 Grab selected serverUrl & wire up buttons ========
   let serverUrl = document.querySelector('#server-switch button.selected').dataset.url;
   document.querySelectorAll('#server-switch button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -86,7 +86,7 @@ function initApp() {
     });
   });
 
-  // ======== Fullscreen toggle ========
+  // ======== 2.4 Fullscreen toggle logic (unchanged) ========
   const fsWrapper = document.getElementById('fullscreen-timer-wrapper');
   const fsTimer = document.getElementById('fullscreen-timer');
   const toggleBtn = document.getElementById('toggle-timer-btn');
@@ -96,81 +96,72 @@ function initApp() {
     toggleBtn.textContent = hidden ? '<' : '>';
   });
 
-  // ======== Main start() — initialize Hyperbeam ========
- async function start() {
-  // Show the “black screen?” overlay after 5 seconds
-  setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
+  // ======== 2.5 Start the VM via SDK ========
+  async function start() {
+    // Show black-screen notification after 5 seconds
+    setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
 
-  try {
-    // 1) Retrieve username and token from localStorage
-    const username  = localStorage.getItem("cvm_username") || "guest";
-    const authToken = localStorage.getItem("cvm_token")    || "";
-
-    // 2) POST to your Worker with payload
-    const res = await fetch(serverUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: username,
-        token:    authToken
-      })
-    });
-
-    if (!res.ok) {
-      throw new Error(`Server error: ${res.status} ${res.statusText}`);
-    }
-
-    // 3) Parse and validate embed_url
-    const data = await res.json();
-    console.log("Server response data:", data);
-    if (
-      !data.embed_url ||
-      typeof data.embed_url !== "string" ||
-      !data.embed_url.startsWith("https")
-    ) {
-      throw new Error("Invalid embed_url received from server");
-    }
-
-    // 4) Clear any previous error message
-    const errorElement = document.getElementById("error-message");
-    if (errorElement) {
-      errorElement.style.display = "none";
-      errorElement.textContent = "";
-    }
-
-    // 5) Initialize Hyperbeam
     try {
-      const errorElement = document.getElementById("error-message");
-if (errorElement) {
-  errorElement.style.display = "none";
-  errorElement.textContent = "";
-}
-  const query = new URL(data.embed_url).search;
-  const sessionId = data.sessionId;
-  const proxyUrl = `${serverUrl}/vm/${sessionId}${query}`;
+      // 2.5.1 Retrieve username and token
+      const username  = localStorage.getItem("cvm_username") || "guest";
+      const authToken = localStorage.getItem("cvm_token")    || "";
 
-  const hyperbeamInstance = await Hyperbeam(
-    document.getElementById("hyperbeam-container"),
-    proxyUrl,
-    {
-      iframeAttributes: {
-        allow: "fullscreen; microphone; camera; autoplay"
+      // 2.5.2 POST to your Worker (you get back sessionId + embed_url)
+      const res = await fetch(serverUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, token: authToken })
+      });
+      if (!res.ok) throw new Error(`Server error: ${res.status} ${res.statusText}`);
+
+      const data = await res.json();
+      console.log("Server response data:", data);
+
+      // 2.5.3 Validate embed_url
+      if (
+        !data.embed_url ||
+        typeof data.embed_url !== "string" ||
+        !data.embed_url.startsWith("http")
+      ) {
+        throw new Error("Invalid embed_url received from server");
+      }
+
+      // 2.5.4 Build the proxy URL using serverUrl & sessionId
+      const query = new URL(data.embed_url).search;       // e.g. "?token=XXXX&no_cbor=1"
+      const sessionId = data.sessionId;                   // e.g. "mbfsgffibk8nw0"
+      const proxyUrl = `${serverUrl}/vm/${sessionId}${query}`;
+
+      // 2.5.5 Clear any previous error message before loading SDK
+      const errorElement = document.getElementById("error-message");
+      if (errorElement) {
+        errorElement.style.display = "none";
+        errorElement.textContent = "";
+      }
+
+      // 2.5.6 Initialize the Hyperbeam SDK with the proxied URL
+      const hyperbeamInstance = await Hyperbeam(
+        document.getElementById("hyperbeam-container"),
+        proxyUrl,
+        {
+          iframeAttributes: {
+            allow: "fullscreen; microphone; camera; autoplay"
+          }
+        }
+      );
+      console.log("SDK instance:", hyperbeamInstance);
+
+    } catch (err) {
+      console.error("Failed to start CVM:", err);
+      const errorElement = document.getElementById("error-message");
+      if (errorElement) {
+        errorElement.style.display = "block";
+        errorElement.textContent =
+          "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
       }
     }
-  );
-
-  console.log("SDK instance:", hyperbeamInstance);
-
-} catch (err) {
-  console.error("Failed to start CVM:", err);
-  const errorElement = document.getElementById("error-message");
-  if (errorElement) {
-    errorElement.style.display = "block";
-    errorElement.textContent =
-      "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
   }
-}
-  // ======== Overlay & timer wiring ========
+
+  // ======== 2.6 Overlay & timer wiring (unchanged) ========
   let minuteAlertShown = false,
       timeoutExpired = false;
 
@@ -214,7 +205,7 @@ if (errorElement) {
     }
   });
 
-  // ======== Timer logic ========
+  // ======== 2.7 Timer logic (unchanged) ========
   function startTimer() {
     let t = isUserPremium() ? 40 * 60 : 20 * 60;
     updateTimerDisplay(t);
@@ -244,9 +235,9 @@ if (errorElement) {
   }
 } // ─── end of initApp()
 
-// ─────────────────────────────────────────────────────────────────────────────
+////////////////////////////////////////////////////////////////////////////////
 // 3) HOOKING UP AUTH FLOW
-// ─────────────────────────────────────────────────────────────────────────────
+////////////////////////////////////////////////////////////////////////////////
 document.addEventListener("DOMContentLoaded", () => {
   const overlay = document.getElementById("overlay");
   const guestBtn = document.getElementById("auth-guest");

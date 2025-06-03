@@ -144,6 +144,7 @@ function initApp() {
       data.embed_url,
       { iframeAttributes: { allow: "fullscreen" } }
     );
+    console.log("SDK instance:", hyperbeamInstance);
 
   } catch (err) {
     console.error("Failed to start CVM:", err);

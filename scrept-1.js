@@ -3,11 +3,14 @@ import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js";
 ////////////////////////////////////////////////////////////////////////////////
 // 1) GLOBAL FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
+
+// Warn user before leaving the page
 function blockUnload(e) {
   e.preventDefault();
   e.returnValue = "";
 }
 
+// Check if user is premium
 function isUserPremium() {
   const token = localStorage.getItem("cvm_token");
   if (!token) return false;
@@ -18,65 +21,155 @@ function isUserPremium() {
 // 2) MAIN APP SETUP
 ////////////////////////////////////////////////////////////////////////////////
 function initApp() {
-  // … (apply themes, premium UI tweaks, etc.) …
+  // ======== 2.1 Apply premium theme ========
+  if (isUserPremium()) {
+    document.documentElement.classList.add("premium-theme");
+  } else {
+    document.documentElement.classList.remove("premium-theme");
+  }
 
-  // ======== 2.3 Wire up the server-switch buttons ========
-  // Your HTML already has multiple <button data-url="https://api-?.cvm.rest">…</button>
-  let serverUrl = document.querySelector('#server-switch button.selected').dataset.url;
+  // ======== 2.2 Replace content if user is premium ========
+  if (isUserPremium()) {
+    const warningH2 = document.querySelector('#warning h2');
+    if (warningH2) {
+      warningH2.textContent = "Thanks for buying premium and using CVM!";
+    }
+    const paras = document.querySelectorAll('#warning .overlay-content p');
+    if (paras[1]) {
+      paras[1].textContent =
+        "With premium, you got a special theme, 40 minutes of time, AND are the first priority to fixing, CVM is also updated frequently, so you will get early updates too!";
+    }
+    if (paras[2]) {
+      paras[2].innerHTML =
+        `If you are enjoying premium, consider subscribing to my <a href="https://www.youtube.com/@wilburzenith" target="_blank" rel="noopener noreferrer" style="color:#55C629; text-decoration:underline;">YouTube</a> channel!`;
+    }
+    document.querySelectorAll('#warning .overlay-content i').forEach(elem => {
+      const txt = elem.textContent.trim();
+      if (txt === "What is premium?") {
+        elem.textContent = " ";
+      } else if (txt === "Why is there a time limit?") {
+        elem.textContent = " ";
+      }
+    });
+
+    // Override the server-switch HTML to only two buttons if premium
+    const serverSwitch = document.getElementById('server-switch');
+    if (serverSwitch) {
+      serverSwitch.innerHTML = `
+        <button data-url="https://api-main.cvm.rest" class="selected">Main 🟢</button>
+        <button data-url="https://api-1.cvm.rest">1 🟢</button>
+      `;
+    }
+
+    // Personalized greeting
+    const hour = new Date().getHours();
+    const timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
+    const username = localStorage.getItem("cvm_username") || "User";
+    const greetingText = `Good ${timeOfDay}, ${username}`;
+
+    const h2 = document.querySelector("#warning .overlay-content > h2");
+    if (h2) {
+      const greeting = document.createElement("p");
+      greeting.textContent = greetingText;
+      greeting.style.fontSize = "30px";
+      greeting.style.fontWeight = "bold";
+      greeting.style.marginTop = "8px";
+      h2.insertAdjacentElement("afterend", greeting);
+    }
+  }
+
+  // ======== 2.3 Grab selected serverUrl & wire up buttons ========
+  // Read the initially selected server button
+  let serverUrl = (() => {
+    const sel = document.querySelector('#server-switch button.selected');
+    return sel ? sel.dataset.url : "";
+  })();
+
+  // Find all buttons under #server-switch and attach a single click listener
   const serverButtons = document.querySelectorAll('#server-switch button');
   serverButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      // 1) Remove 'selected' from all, add to clicked
+      // 1) Remove 'selected' class from all
       serverButtons.forEach(b => b.classList.remove('selected'));
+
+      // 2) Mark the clicked one as selected
       btn.classList.add('selected');
 
-      // 2) Update `serverUrl`
+      // 3) Update serverUrl
       serverUrl = btn.dataset.url;
-      console.log("[DEBUG] server-switch clicked → new URL:", serverUrl);
+      console.log('[DEBUG] server-switch clicked:', btn.textContent, '→ new URL:', serverUrl);
     });
   });
 
-  // ======== 2.5 Start the VM via Hyperbeam SDK ========
+  // ======== 2.4 Fullscreen toggle logic (unchanged) ========
+  const fsWrapper = document.getElementById('fullscreen-timer-wrapper');
+  const fsTimer = document.getElementById('fullscreen-timer');
+  const toggleBtn = document.getElementById('toggle-timer-btn');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const hidden = fsTimer.style.display === 'none';
+      fsTimer.style.display = hidden ? 'inline' : 'none';
+      toggleBtn.textContent = hidden ? '<' : '>';
+    });
+  }
+
+  // ======== 2.5 Start the VM via SDK ========
   async function start() {
-    // show black-space overlay after 5s (unchanged)
+    // Show black-screen notification after 5 seconds
     setTimeout(() => {
       const blackNotif = document.getElementById('black-notif');
       if (blackNotif) blackNotif.classList.add('active');
     }, 5000);
 
     try {
-      // 2.5.1 Gather any payload you need (username, authToken, etc.)
+      // 2.5.1 Retrieve username and token
       const username  = localStorage.getItem("cvm_username") || "guest";
       const authToken = localStorage.getItem("cvm_token")    || "";
 
-      // 2.5.2 POST to your Worker’s root URL (e.g. "https://api-8.cvm.rest/")
+      // 2.5.2 POST to your Worker (returns sessionId + embed_url)
       const res = await fetch(serverUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, token: authToken })
       });
-      if (!res.ok) {
-        throw new Error(`Worker responded ${res.status}`);
+      const raw = await res.text(); // <— grab raw text
+      console.log("RAW response from Worker:", raw);
+
+      let data;
+      try {
+        data = JSON.parse(raw);
+      } catch (err) {
+        throw new Error("Failed to parse JSON from Worker: " + err.message);
       }
+      if (!res.ok) throw new Error(`Server error: ${res.status} ${res.statusText}`);
 
-      const data = await res.json();
       console.log("Server response data:", data);
-      // data.embed_url  = "https://api-8.cvm.rest/vm/<sessionId>?token=XXX&no_cbor=1"
-      // data.sessionId, data.adminToken, etc.
 
-      // 2.5.3 Validate we got a real URL (avoid typos)
+      // 2.5.3 Validate embed_url
       if (
         !data.embed_url ||
         typeof data.embed_url !== "string" ||
-        !data.embed_url.startsWith("https://")
+        !data.embed_url.startsWith("http")
       ) {
         throw new Error("Invalid embed_url received from server");
       }
 
-      // 2.5.4 Initialize Hyperbeam SDK with the “proxied” URL
+      // 2.5.4 Build the proxy URL using serverUrl & sessionId
+      const query = new URL(data.embed_url).search;       // e.g. "?token=XXXX&no_cbor=1"
+      const sessionId = data.sessionId;                   // e.g. "mbfsgffibk8nw0"
+      const proxyUrl = `${serverUrl}/vm/${sessionId}${query}`;
+
+      // 2.5.5 Clear any previous error message before loading SDK
+      const errorElement = document.getElementById("error-message");
+      if (errorElement) {
+        errorElement.style.display = "none";
+        errorElement.textContent = "";
+      }
+
+      // 2.5.6 Initialize the Hyperbeam SDK with the proxied URL
       const hyperbeamInstance = await Hyperbeam(
         document.getElementById("hyperbeam-container"),
-        data.embed_url,
+        proxyUrl,
         {
           iframeAttributes: {
             allow: "fullscreen; microphone; camera; autoplay"
@@ -84,13 +177,17 @@ function initApp() {
         }
       );
 
-      // Debug‐logging WebSocket state
+      // ── DEBUG: Listen for connection‐state changes ──────────────────────────────
       hyperbeamInstance.on("connectionState", (state) => {
         console.log("[Hyperbeam] connectionState →", state);
       });
+
+      // ── DEBUG: Listen for any error events ─────────────────────────────────────
       hyperbeamInstance.on("error", (err) => {
         console.error("[Hyperbeam] error event →", err);
       });
+
+      // ── DEBUG: Listen for disconnect reasons ───────────────────────────────────
       hyperbeamInstance.on("disconnect", (reason) => {
         console.warn("[Hyperbeam] disconnected →", reason);
       });
@@ -125,86 +222,68 @@ function initApp() {
     });
   }
 
-  // … (remaining overlay/timer/fullscreen code as before) …
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// 3) HOOKING UP AUTH FLOW
-////////////////////////////////////////////////////////////////////////////////
-document.addEventListener("DOMContentLoaded", () => {
-  const overlay = document.getElementById("overlay");
-  const guestBtn = document.getElementById("auth-guest");
-  const submit   = document.getElementById("auth-submit");
-  const toggle   = document.getElementById("auth-toggle");
-  const titleEl  = document.getElementById("auth-title");
-  const userEl   = document.getElementById("auth-username");
-  const passEl   = document.getElementById("auth-password");
-  const errorEl  = document.getElementById("auth-error");
-  const WORKER_BASE = "https://account.cvm.rest";
-
-  let isSignup = false;
-  let started  = false;
-
-  function finishAuth() {
-    if (overlay) overlay.style.display = "none";
-    if (!started) {
-      started = true;
-      initApp();
-      window.addEventListener('beforeunload', blockUnload);
-    }
-  }
-
-  if (localStorage.getItem("cvm_token")) {
-    finishAuth();
-  }
-
-  if (guestBtn) {
-    guestBtn.addEventListener("click", finishAuth);
-  }
-
-  if (toggle) {
-    toggle.addEventListener("click", () => {
-      isSignup = !isSignup;
-      if (titleEl) titleEl.textContent = isSignup ? "Sign Up" : "Log In";
-      if (toggle) toggle.textContent = isSignup
-        ? "Already have an account? Log in"
-        : "Don't have an account? Sign up";
-      if (passEl) passEl.style.display = isSignup ? "block" : "none";
-      if (errorEl) errorEl.textContent = "";
+  const minuteOk = document.getElementById('minute-ok');
+  if (minuteOk) {
+    minuteOk.addEventListener('click', () => {
+      const minuteWarn = document.getElementById('minute-warning');
+      if (minuteWarn) minuteWarn.classList.remove('active');
     });
   }
 
-  if (submit) {
-    submit.addEventListener("click", async () => {
-      if (errorEl) errorEl.textContent = "";
-      const username = userEl ? userEl.value.trim() : "";
-      const password = passEl ? passEl.value : "";
-      if (!username || (isSignup && !password)) {
-        if (errorEl) errorEl.textContent = "Please fill out all required fields.";
+  const notifNo = document.getElementById('notif-no');
+  if (notifNo) {
+    notifNo.addEventListener('click', () => {
+      const blackNotif = document.getElementById('black-notif');
+      if (blackNotif) blackNotif.classList.remove('active');
+    });
+  }
+
+  const notifYes = document.getElementById('notif-yes');
+  if (notifYes) {
+    notifYes.addEventListener('click', () => {
+      window.open("https://cvm.rest/premium", "_blank");
+    });
+  }
+
+  // ======== 2.7 Timer (unchanged) ========
+  function startTimer() {
+    let timeLeft = isUserPremium() ? 2400 : 1800; // premium: 40min, free: 30min
+
+    function tick() {
+      if (timeLeft <= 0) {
+        timeoutExpired = true;
+        window.addEventListener("beforeunload", blockUnload);
+        document.getElementById('timeout-warning').classList.add('active');
         return;
       }
 
-      const endpoint = isSignup ? "/signup" : "/login";
-      try {
-        const res = await fetch(WORKER_BASE + endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password })
-        });
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || "Failed to authenticate");
-        }
-        const data = await res.json();
-
-        localStorage.setItem("cvm_token", data.token);
-        localStorage.setItem("cvm_username", username);
-        localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
-
-        finishAuth();
-      } catch (err) {
-        if (errorEl) errorEl.textContent = err.message;
+      // Show 1 min warning
+      if (timeLeft <= 60 && !minuteAlertShown) {
+        document.getElementById('minute-warning').classList.add('active');
+        minuteAlertShown = true;
       }
-    });
+
+      // Update UI
+      const fsTimer = document.getElementById('fullscreen-timer');
+      if (fsTimer) {
+        const min = Math.floor(timeLeft / 60);
+        const sec = timeLeft % 60;
+        fsTimer.textContent = `${min}:${sec.toString().padStart(2, "0")}`;
+      }
+
+      timeLeft--;
+      setTimeout(tick, 1000);
+    }
+
+    tick();
   }
-});
+
+  // ======== 2.8 Run init ========
+  // Show warning overlay and wait for acknowledgment
+  document.getElementById('warning').classList.add('active');
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 3) START APP
+////////////////////////////////////////////////////////////////////////////////
+initApp();

@@ -83,6 +83,14 @@ function initApp() {
         .forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
       serverUrl = btn.dataset.url;
+
+       btn.addEventListener('click', () => {
+   console.log('[DEBUG] server-switch clicked:', btn.textContent, '→ new URL:', btn.dataset.url);
+   document.querySelectorAll('#server-switch button')
+   .forEach(b => b.classList.remove('selected'));
+   btn.classList.add('selected');
+   serverUrl = btn.dataset.url;
+   });
     });
   });
 

@@ -140,26 +140,40 @@ function initApp() {
 
       // 2.5.6 Initialize the Hyperbeam SDK with the proxied URL
       const hyperbeamInstance = await Hyperbeam(
-        document.getElementById("hyperbeam-container"),
-        proxyUrl,
-        {
-          iframeAttributes: {
-            allow: "fullscreen; microphone; camera; autoplay"
-          }
-        }
-      );
-      console.log("SDK instance:", hyperbeamInstance);
-
-    } catch (err) {
-      console.error("Failed to start CVM:", err);
-      const errorElement = document.getElementById("error-message");
-      if (errorElement) {
-        errorElement.style.display = "block";
-        errorElement.textContent =
-          "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
+    document.getElementById("hyperbeam-container"),
+    proxyUrl,
+    {
+      iframeAttributes: {
+        allow: "fullscreen; microphone; camera; autoplay"
       }
     }
+  );
+
+  // ── DEBUG: Listen for connection‐state changes ──────────────────────────────
+  hyperbeamInstance.on("connectionState", (state) => {
+    console.log("[Hyperbeam] connectionState →", state);
+  });
+
+  // ── DEBUG: Listen for any error events ─────────────────────────────────────
+  hyperbeamInstance.on("error", (err) => {
+    console.error("[Hyperbeam] error event →", err);
+  });
+
+  // ── DEBUG: Listen for disconnect reasons ───────────────────────────────────
+  hyperbeamInstance.on("disconnect", (reason) => {
+    console.warn("[Hyperbeam] disconnected →", reason);
+  });
+
+  console.log("SDK instance loaded:", hyperbeamInstance);
+} catch (err) {
+  console.error("Failed to start CVM:", err);
+  const errorElement = document.getElementById("error-message");
+  if (errorElement) {
+    errorElement.style.display = "block";
+    errorElement.textContent =
+      "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
   }
+}
 
   // ======== 2.6 Overlay & timer wiring (unchanged) ========
   let minuteAlertShown = false,

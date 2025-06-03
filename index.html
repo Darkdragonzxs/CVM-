@@ -4,74 +4,75 @@
   <meta charset="UTF-8" />
   <meta http-equiv="Permissions-Policy" content="fullscreen=(self)">
   <title>Home</title>
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <link rel="stylesheet" href="styles.css">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="description" content="V2: An immersive and secure Chromium VM running just on your browser, sign-up today!">
-
+</head>
+<body>
   <!-- —— AUTH OVERLAY —— -->
   <div id="overlay">
-  <div id="auth-overlay">
-    <div id="auth-box">
-      <h2 id="auth-title">Login</h2>
-      <input type="text" id="auth-username" placeholder="Username" autocomplete="username">
-      <input type="password" id="auth-password" placeholder="Password" autocomplete="current-password">
-      <button id="auth-submit">Login</button>
-      <button id="auth-guest"><b>Guest</b></button>
-      <div id="auth-error"></div>
-      <button id="auth-toggle">Don't have an account? Sign up</button>
-      <i>Forgot password?</i>
-      <i>E-mail <u>recover@cvm.rest</u> to get assistance</i>
+    <div id="auth-overlay">
+      <div id="auth-box">
+        <h2 id="auth-title">Login</h2>
+        <input type="text" id="auth-username" placeholder="Username" autocomplete="username">
+        <input type="password" id="auth-password" placeholder="Password" autocomplete="current-password">
+        <button id="auth-submit">Login</button>
+        <button id="auth-guest"><b>Guest</b></button>
+        <div id="auth-error"></div>
+        <button id="auth-toggle">Don't have an account? Sign up</button>
+        <i>Forgot password?</i>
+        <i>E-mail <u>recover@cvm.rest</u> to get assistance</i>
+      </div>
     </div>
   </div>
-    </div>
-<body>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <meta name="description" content="Version 2.1: An immersive and secure Chromium VM sandbox running just on your browser!">
 
   <!-- Disable right-click -->
   <script>
     ['contextmenu','mousedown','mouseup'].forEach(evt =>
       document.addEventListener(evt, e => {
-        if (evt==='contextmenu' || e.button===2) {
-          e.preventDefault(); return false;
+        if (evt === 'contextmenu' || e.button === 2) {
+          e.preventDefault();
+          return false;
         }
       })
     );
   </script>
 
-  <!-- Overlays -->
-
-    <!-- PAGE-LOAD ALERT (visible immediately) -->
- <div id="alertBox">
-  <div class="alert-content">
-    <span style="font-size:48px;">😀</span>
-    <h2>Announcement:</h2>
-    <p>I have been thinking about development, and I have decided to <b>continue</b> development on <u>CVM</u>! I will be discussing future updates in our <a href="https://discord.gg/hwD2h8xaMB" style="color:#86E826; font-weight: bold;">Discorn</a> server.</p>
-    <b> </b>
-    <p>I am aware that HB is <b>rate-limiting</b>, it lasts a <u>MONTH</u>, and there is nothing I can do about it, so if a server doesn't work, try a different one, but if <b>ALL</b> of the servers get rate-limited, then I guess we're cooked... But, more servers will come if this happens too often. Very sorry for the inconvenience!</p>
-     <div class="2030">
-    <img
-      src="/img/woah.png"
-      alt="..."
-      draggable="false"
-    >
-    <div class="overlay-text">🤔</div>
+  <!-- —— PAGE-LOAD ALERT —— -->
+  <div id="alertBox">
+    <div class="alert-content">
+      <span style="font-size:48px;">😀</span>
+      <h2>Announcement:</h2>
+      <p>
+        I have been thinking about development, and I have decided to <b>continue</b> development on <u>CVM</u>! I will be discussing future updates in our
+        <a href="https://discord.gg/hwD2h8xaMB" style="color:#86E826; font-weight: bold;">Discorn</a> server.
+      </p>
+      <p>
+        I am aware that HB is <b>rate-limiting</b>, it lasts a <u>MONTH</u>, and there is nothing I can do about it, so if a server doesn't work, try a different one, but if <b>ALL</b> of the servers get rate-limited, then I guess we're cooked... But, more servers will come if this happens too often. Very sorry for the inconvenience!
+      </p>
+      <div class="2030">
+        <img src="/img/woah.png" alt="..." draggable="false">
+        <div class="overlay-text">🤔</div>
+      </div>
+      <button style="margin-top: 30px;" id="okButton">OK</button>
+    </div>
   </div>
-    <b> </b>
-    <button style="margin-top: 30px;" id="okButton">OK</button>
-  </div>
-</div>
 
+  <!-- —— MAIN WARNING OVERLAY —— -->
   <div id="warning" class="overlay active">
     <div class="overlay-content">
       <h2>Thanks for using CVM!</h2>
-      <p style="font-size:16px;">This app is in beta, and bugs may occur, if you found one, please email <b>broken-vm@cvm.rest</b></p>
+      <p style="font-size:16px;">
+        This app is in beta, and bugs may occur, if you found one, please email <b>broken-vm@cvm.rest</b>
+      </p>
       <i style="font-size:20px;">Why is there a time limit?</i>
-      <p style="font-size:16.5px;">There is a time limit to keep things fair for other users, and to keep the servers up without crashing!</p>
+      <p style="font-size:16.5px;">
+        There is a time limit to keep things fair for other users, and to keep the servers up without crashing!
+      </p>
       <i style="font-size:20px;">What is premium?</i>
-      <p style="font-size:16.5px;">Premium accounts have longer session time (40 minutes), have a special theme, and are the first priority to fixing! It is only $1, currently, there is no way to <u>purchase</u> premium at this time.</p>
+      <p style="font-size:16.5px;">
+        Premium accounts have longer session time (40 minutes), have a special theme, and are the first priority to fixing! It is only $1, currently, there is no way to <u>purchase</u> premium at this time.
+      </p>
       <p style="font-weight:bold;">
         <a href="https://cvm.rest/updates/" style="color:#55C629;text-decoration:underline;font-family:Impact, sans-serif;">
           Update logs
@@ -106,6 +107,7 @@
     </div>
   </div>
 
+  <!-- —— ONE MINUTE LEFT OVERLAY —— -->
   <div id="minute-warning" class="overlay">
     <div class="overlay-content">
       <p><span style="font-size:48px;">⚠️</span> There is one minute left in your session.</p>
@@ -113,6 +115,7 @@
     </div>
   </div>
 
+  <!-- —— BLACK SCREEN NOTIFICATION OVERLAY —— -->
   <div id="black-notif" class="overlay">
     <div class="overlay-content">
       <span style="font-size:48px;">🤔</span>
@@ -122,54 +125,54 @@
     </div>
   </div>
 
+  <!-- —— BLACK SCREEN EXPLANATION OVERLAY —— -->
   <div id="black-alert" class="overlay">
     <div class="overlay-content" style="display:flex;gap:15px;align-items:flex-start;">
       <div style="font-size:48px;line-height:1;">💀</div>
       <div>
-        <p style="font-size:24px;">If you just see a black screen for more than 5 seconds, it’s either:<br>
-           1. HB was rate-limited<br>
-           2. Too many users<br>
-           3. The school blocked the frame<br>
-           4. We're down temporarily</p>
+        <p style="font-size:24px;">
+          If you just see a black screen for more than 5 seconds, it’s either:<br>
+          1. HB was rate-limited<br>
+          2. Too many users<br>
+          3. The school blocked the frame<br>
+          4. We're down temporarily
+        </p>
         <p>Check back later or email <b>broken-vm@cvm.rest</b></p>
         <button id="black-ok">OK</button>
         <script>
-  document.getElementById('black-ok').addEventListener('click', function () {
-    window.location.href = 'https://cvm.rest';
-  });
-</script>
+          document.getElementById('black-ok').addEventListener('click', function () {
+            window.location.href = 'https://cvm.rest';
+          });
+        </script>
       </div>
     </div>
   </div>
 
-  <!-- Hyperbeam VM & Errors -->
+  <!-- —— Hyperbeam VM & Error Message Container —— -->
   <div id="hyperbeam-container"></div>
   <div id="error-message"></div>
 
-  <!-- Bottom bar -->
- <div id="bottom-bar">
+  <!-- —— Bottom Bar —— -->
+  <div id="bottom-bar">
     <span id="timer">20:00</span>
     <button id="fullscreen-btn">
       <img src="/img/fullscreen.png" alt="FS" draggable="false">
     </button>
+    <!-- Put signout *before* the auto-margin logo -->
+    <button id="signout-btn">Sign Out</button>
+    <!-- Your CVM logo — now it will push *after* signout, not before -->
+    <img src="/img/CVM.png" alt="CVM">
+    <span id="copyright-text">2025 © WZ LLC, VM by HB.</span>
+  </div>
 
-  <!-- Put signout *before* the auto-margin logo -->
-  <button id="signout-btn">Sign Out</button>
-
-  <!-- Your CVM logo — now it will push *after* signout, not before -->
-  <img src="/img/CVM.png" alt="CVM">
-
-  <span id="copyright-text">2025 © WZ LLC, VM by HB.</span>
-</div>
-
-  <!-- Fullscreen timer + toggle -->
+  <!-- —— Fullscreen Timer + Toggle —— -->
   <div id="fullscreen-timer-wrapper">
     <div id="fullscreen-timer">20:00</div>
     <button id="toggle-timer-btn">&lt;</button>
   </div>
 
-  <!-- Main script -->
-<script type="module" src="scrept-1.js"></script>
+  <!-- —— Main Scripts —— -->
+  <script type="module" src="scrept-1.js"></script>
   <script src="scrept-2.js" defer></script>
 </body>
 </html>

@@ -84,13 +84,8 @@ function initApp() {
       btn.classList.add('selected');
       serverUrl = btn.dataset.url;
 
-       btn.addEventListener('click', () => {
-   console.log('[DEBUG] server-switch clicked:', btn.textContent, '→ new URL:', btn.dataset.url);
-   document.querySelectorAll('#server-switch button')
-   .forEach(b => b.classList.remove('selected'));
-   btn.classList.add('selected');
-   serverUrl = btn.dataset.url;
-   });
+      // The duplicate event listener removed; corrected as follows:
+      console.log('[DEBUG] server-switch clicked:', btn.textContent, '→ new URL:', btn.dataset.url);
     });
   });
 
@@ -148,40 +143,41 @@ function initApp() {
 
       // 2.5.6 Initialize the Hyperbeam SDK with the proxied URL
       const hyperbeamInstance = await Hyperbeam(
-    document.getElementById("hyperbeam-container"),
-    proxyUrl,
-    {
-      iframeAttributes: {
-        allow: "fullscreen; microphone; camera; autoplay"
+        document.getElementById("hyperbeam-container"),
+        proxyUrl,
+        {
+          iframeAttributes: {
+            allow: "fullscreen; microphone; camera; autoplay"
+          }
+        }
+      );
+
+      // ── DEBUG: Listen for connection‐state changes ──────────────────────────────
+      hyperbeamInstance.on("connectionState", (state) => {
+        console.log("[Hyperbeam] connectionState →", state);
+      });
+
+      // ── DEBUG: Listen for any error events ─────────────────────────────────────
+      hyperbeamInstance.on("error", (err) => {
+        console.error("[Hyperbeam] error event →", err);
+      });
+
+      // ── DEBUG: Listen for disconnect reasons ───────────────────────────────────
+      hyperbeamInstance.on("disconnect", (reason) => {
+        console.warn("[Hyperbeam] disconnected →", reason);
+      });
+
+      console.log("SDK instance loaded:", hyperbeamInstance);
+    } catch (err) {
+      console.error("Failed to start CVM:", err);
+      const errorElement = document.getElementById("error-message");
+      if (errorElement) {
+        errorElement.style.display = "block";
+        errorElement.textContent =
+          "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
       }
     }
-  );
-
-  // ── DEBUG: Listen for connection‐state changes ──────────────────────────────
-  hyperbeamInstance.on("connectionState", (state) => {
-    console.log("[Hyperbeam] connectionState →", state);
-  });
-
-  // ── DEBUG: Listen for any error events ─────────────────────────────────────
-  hyperbeamInstance.on("error", (err) => {
-    console.error("[Hyperbeam] error event →", err);
-  });
-
-  // ── DEBUG: Listen for disconnect reasons ───────────────────────────────────
-  hyperbeamInstance.on("disconnect", (reason) => {
-    console.warn("[Hyperbeam] disconnected →", reason);
-  });
-
-  console.log("SDK instance loaded:", hyperbeamInstance);
-} catch (err) {
-  console.error("Failed to start CVM:", err);
-  const errorElement = document.getElementById("error-message");
-  if (errorElement) {
-    errorElement.style.display = "block";
-    errorElement.textContent =
-      "Unable to launch CVM. Possible proxy issue, rate-limit, or network block.";
   }
-}
 
   // ======== 2.6 Overlay & timer wiring (unchanged) ========
   let minuteAlertShown = false,
@@ -291,25 +287,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Guest access
   guestBtn.addEventListener("click", finishAuth);
 
-  // Toggle login/signup UI
+  // Toggle login/signup mode
   toggle.addEventListener("click", () => {
     isSignup = !isSignup;
-    titleEl.textContent = isSignup ? "Sign Up" : "Login";
-    submit.textContent   = isSignup ? "Sign Up" : "Login";
-    toggle.textContent   = isSignup
-      ? "Already have an account? Login"
-      : "Don't have an account? Sign up";
+    titleEl.textContent = isSignup ? "Sign Up" : "Log In";
+    toggle.textContent = isSignup ? "Already have an account? Log in" : "Don't have an account? Sign up";
+    passEl.style.display = isSignup ? "block" : "none";
     errorEl.textContent = "";
   });
 
-  // Login / Sign Up flow
+  // Handle login/signup form submit
   submit.addEventListener("click", async () => {
+    errorEl.textContent = "";
     const username = userEl.value.trim();
     const password = passEl.value;
-    if (!username || !password) {
-      errorEl.textContent = "Please fill in both fields.";
+    if (!username || (isSignup && !password)) {
+      errorEl.textContent = "Please fill out all required fields.";
       return;
     }
+
     const endpoint = isSignup ? "/signup" : "/login";
     try {
       const res = await fetch(WORKER_BASE + endpoint, {
@@ -317,11 +313,16 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
       });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to authenticate");
+      }
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Unknown error");
+
       localStorage.setItem("cvm_token", data.token);
       localStorage.setItem("cvm_username", username);
       localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
+
       finishAuth();
     } catch (err) {
       errorEl.textContent = err.message;

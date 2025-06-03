@@ -147,7 +147,7 @@ if (errorElement) {
 }
   const query = new URL(data.embed_url).search;
   const sessionId = data.sessionId;
-  const proxyUrl = `https://api-8.cvm.rest/vm/${sessionId}${query}`;
+  const proxyUrl = `${serverUrl}/vm/${sessionId}${query}`;
 
   const hyperbeamInstance = await Hyperbeam(
     document.getElementById("hyperbeam-container"),

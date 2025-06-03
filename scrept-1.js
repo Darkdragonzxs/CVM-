@@ -54,8 +54,8 @@ function initApp() {
     const serverSwitch = document.getElementById('server-switch');
     if (serverSwitch) {
       serverSwitch.innerHTML = `
-        <button data-url="https://api-main.cvm.rest/" class="selected">Main 🟢</button>
-        <button data-url="https://api-1.cvm.rest/">1 🟢</button>
+        <button data-url="https://api-main.cvm.rest" class="selected">Main 🟢</button>
+        <button data-url="https://api-1.cvm.rest">1 🟢</button>
       `;
     }
     // Personalized greeting

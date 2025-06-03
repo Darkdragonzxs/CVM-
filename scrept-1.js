@@ -114,6 +114,26 @@ function initApp() {
   }
 
   // ======== 2.5 Start the VM via SDK ========
+
+  // Example: count down from 20:00 in #timer element
+const timerElement = document.getElementById('timer');
+let totalSeconds = 20 * 60; // 20 minutes
+
+function updateTimer() {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  timerElement.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  if (totalSeconds > 0) {
+    totalSeconds--;
+  } else {
+    clearInterval(timerInterval);
+    // Timer ended — do something here (disable buttons, show alert...)
+  }
+}
+
+const timerInterval = setInterval(updateTimer, 1000);
+updateTimer(); // initialize immediately
+  
   async function start() {
     // Show black-screen notification after 5 seconds
     setTimeout(() => {

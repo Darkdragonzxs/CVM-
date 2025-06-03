@@ -132,6 +132,15 @@ function initApp() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, token: authToken })
       });
+      const raw = await res.text(); // <— grab raw text
+console.log("RAW response from Worker:", raw);
+
+let data;
+try {
+  data = JSON.parse(raw);
+} catch (err) {
+  throw new Error("Failed to parse JSON from Worker: " + err.message);
+}
       if (!res.ok) throw new Error(`Server error: ${res.status} ${res.statusText}`);
 
       const data = await res.json();

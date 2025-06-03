@@ -51,6 +51,8 @@ function initApp() {
         elem.textContent = " ";
       }
     });
+
+    // Override the server-switch HTML to only two buttons if premium
     const serverSwitch = document.getElementById('server-switch');
     if (serverSwitch) {
       serverSwitch.innerHTML = `
@@ -58,6 +60,7 @@ function initApp() {
         <button data-url="https://api-1.cvm.rest">1 🟢</button>
       `;
     }
+
     // Personalized greeting
     const hour = new Date().getHours();
     const timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
@@ -76,16 +79,25 @@ function initApp() {
   }
 
   // ======== 2.3 Grab selected serverUrl & wire up buttons ========
-  let serverUrl = document.querySelector('#server-switch button.selected').dataset.url;
-  document.querySelectorAll('#server-switch button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#server-switch button')
-        .forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      serverUrl = btn.dataset.url;
+  // Read the initially selected server button
+  let serverUrl = (() => {
+    const sel = document.querySelector('#server-switch button.selected');
+    return sel ? sel.dataset.url : "";
+  })();
 
-      // The duplicate event listener removed; corrected as follows:
-      console.log('[DEBUG] server-switch clicked:', btn.textContent, '→ new URL:', btn.dataset.url);
+  // Find all buttons under #server-switch and attach a single click listener
+  const serverButtons = document.querySelectorAll('#server-switch button');
+  serverButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // 1) Remove 'selected' class from all
+      serverButtons.forEach(b => b.classList.remove('selected'));
+
+      // 2) Mark the clicked one as selected
+      btn.classList.add('selected');
+
+      // 3) Update serverUrl
+      serverUrl = btn.dataset.url;
+      console.log('[DEBUG] server-switch clicked:', btn.textContent, '→ new URL:', serverUrl);
     });
   });
 
@@ -93,23 +105,28 @@ function initApp() {
   const fsWrapper = document.getElementById('fullscreen-timer-wrapper');
   const fsTimer = document.getElementById('fullscreen-timer');
   const toggleBtn = document.getElementById('toggle-timer-btn');
-  toggleBtn.addEventListener('click', () => {
-    const hidden = fsTimer.style.display === 'none';
-    fsTimer.style.display = hidden ? 'inline' : 'none';
-    toggleBtn.textContent = hidden ? '<' : '>';
-  });
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const hidden = fsTimer.style.display === 'none';
+      fsTimer.style.display = hidden ? 'inline' : 'none';
+      toggleBtn.textContent = hidden ? '<' : '>';
+    });
+  }
 
   // ======== 2.5 Start the VM via SDK ========
   async function start() {
     // Show black-screen notification after 5 seconds
-    setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
+    setTimeout(() => {
+      const blackNotif = document.getElementById('black-notif');
+      if (blackNotif) blackNotif.classList.add('active');
+    }, 5000);
 
     try {
       // 2.5.1 Retrieve username and token
       const username  = localStorage.getItem("cvm_username") || "guest";
       const authToken = localStorage.getItem("cvm_token")    || "";
 
-      // 2.5.2 POST to your Worker (you get back sessionId + embed_url)
+      // 2.5.2 POST to your Worker (returns sessionId + embed_url)
       const res = await fetch(serverUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -183,43 +200,79 @@ function initApp() {
   let minuteAlertShown = false,
       timeoutExpired = false;
 
-  document.getElementById('acknowledge-checkbox').addEventListener('change', e =>
-    document.getElementById('close-warning').disabled = !e.target.checked
-  );
-  document.getElementById('close-warning').addEventListener('click', () => {
-    document.getElementById('warning').classList.remove('active');
-    start();
-    startTimer();
-  });
-  document.getElementById('minute-ok').addEventListener('click', () =>
-    document.getElementById('minute-warning').classList.remove('active')
-  );
-  document.getElementById('notif-no').addEventListener('click', () =>
-    document.getElementById('black-notif').classList.remove('active')
-  );
-  document.getElementById('notif-yes').addEventListener('click', () => {
-    document.getElementById('black-notif').classList.remove('active');
-    document.getElementById('black-alert').classList.add('active');
-  });
-  document.getElementById('black-ok').addEventListener('click', () =>
-    document.getElementById('black-alert').classList.remove('active')
-  );
-  document.getElementById('fullscreen-btn').addEventListener('click', async () => {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-    } else {
-      await document.exitFullscreen();
-    }
-  });
+  const ackCheckbox = document.getElementById('acknowledge-checkbox');
+  const closeWarning = document.getElementById('close-warning');
+  if (ackCheckbox && closeWarning) {
+    ackCheckbox.addEventListener('change', e => {
+      closeWarning.disabled = !e.target.checked;
+    });
+    closeWarning.addEventListener('click', () => {
+      const warningOverlay = document.getElementById('warning');
+      if (warningOverlay) warningOverlay.classList.remove('active');
+      start();
+      startTimer();
+    });
+  }
+
+  const minuteOk = document.getElementById('minute-ok');
+  if (minuteOk) {
+    minuteOk.addEventListener('click', () => {
+      const minuteWarn = document.getElementById('minute-warning');
+      if (minuteWarn) minuteWarn.classList.remove('active');
+    });
+  }
+
+  const notifNo = document.getElementById('notif-no');
+  if (notifNo) {
+    notifNo.addEventListener('click', () => {
+      const blackNotif = document.getElementById('black-notif');
+      if (blackNotif) blackNotif.classList.remove('active');
+    });
+  }
+
+  const notifYes = document.getElementById('notif-yes');
+  if (notifYes) {
+    notifYes.addEventListener('click', () => {
+      const blackNotif = document.getElementById('black-notif');
+      if (blackNotif) blackNotif.classList.remove('active');
+      const blackAlert = document.getElementById('black-alert');
+      if (blackAlert) blackAlert.classList.add('active');
+    });
+  }
+
+  const blackOk = document.getElementById('black-ok');
+  if (blackOk) {
+    blackOk.addEventListener('click', () => {
+      const blackAlert = document.getElementById('black-alert');
+      if (blackAlert) blackAlert.classList.remove('active');
+    });
+  }
+
+  const fsBtn = document.getElementById('fullscreen-btn');
+  if (fsBtn) {
+    fsBtn.addEventListener('click', async () => {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    });
+  }
+
   document.addEventListener('fullscreenchange', () => {
     const inFS = !!document.fullscreenElement;
-    document.getElementById('bottom-bar').style.display = inFS ? 'none' : 'flex';
-    document.getElementById('hyperbeam-container')
-      .classList.toggle('fullscreen-mode', inFS);
-    fsWrapper.style.display = inFS ? 'flex' : 'none';
+    const bottomBar = document.getElementById('bottom-bar');
+    if (bottomBar) bottomBar.style.display = inFS ? 'none' : 'flex';
+
+    const hbContainer = document.getElementById('hyperbeam-container');
+    if (hbContainer) hbContainer.classList.toggle('fullscreen-mode', inFS);
+
     if (inFS) {
+      fsWrapper.style.display = 'flex';
       fsTimer.style.display = 'inline';
       toggleBtn.textContent = '<';
+    } else {
+      fsWrapper.style.display = 'none';
     }
   });
 
@@ -233,7 +286,8 @@ function initApp() {
         updateTimerDisplay(t);
         if (t === 60 && !minuteAlertShown) {
           minuteAlertShown = true;
-          document.getElementById('minute-warning').classList.add('active');
+          const minuteWarn = document.getElementById('minute-warning');
+          if (minuteWarn) minuteWarn.classList.add('active');
         }
       } else {
         clearInterval(iv);
@@ -248,8 +302,10 @@ function initApp() {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
     const txt = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    document.getElementById('timer').textContent = txt;
-    document.getElementById('fullscreen-timer').textContent = txt;
+    const timer = document.getElementById('timer');
+    const fsTimerEl = document.getElementById('fullscreen-timer');
+    if (timer) timer.textContent = txt;
+    if (fsTimerEl) fsTimerEl.textContent = txt;
   }
 } // ─── end of initApp()
 
@@ -271,7 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let started  = false;
 
   function finishAuth() {
-    overlay.style.display = "none";
+    if (overlay) overlay.style.display = "none";
     if (!started) {
       started = true;
       initApp();
@@ -285,47 +341,53 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Guest access
-  guestBtn.addEventListener("click", finishAuth);
+  if (guestBtn) {
+    guestBtn.addEventListener("click", finishAuth);
+  }
 
   // Toggle login/signup mode
-  toggle.addEventListener("click", () => {
-    isSignup = !isSignup;
-    titleEl.textContent = isSignup ? "Sign Up" : "Log In";
-    toggle.textContent = isSignup ? "Already have an account? Log in" : "Don't have an account? Sign up";
-    passEl.style.display = isSignup ? "block" : "none";
-    errorEl.textContent = "";
-  });
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      isSignup = !isSignup;
+      if (titleEl) titleEl.textContent = isSignup ? "Sign Up" : "Log In";
+      if (toggle) toggle.textContent = isSignup ? "Already have an account? Log in" : "Don't have an account? Sign up";
+      if (passEl) passEl.style.display = isSignup ? "block" : "none";
+      if (errorEl) errorEl.textContent = "";
+    });
+  }
 
   // Handle login/signup form submit
-  submit.addEventListener("click", async () => {
-    errorEl.textContent = "";
-    const username = userEl.value.trim();
-    const password = passEl.value;
-    if (!username || (isSignup && !password)) {
-      errorEl.textContent = "Please fill out all required fields.";
-      return;
-    }
-
-    const endpoint = isSignup ? "/signup" : "/login";
-    try {
-      const res = await fetch(WORKER_BASE + endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Failed to authenticate");
+  if (submit) {
+    submit.addEventListener("click", async () => {
+      if (errorEl) errorEl.textContent = "";
+      const username = userEl ? userEl.value.trim() : "";
+      const password = passEl ? passEl.value : "";
+      if (!username || (isSignup && !password)) {
+        if (errorEl) errorEl.textContent = "Please fill out all required fields.";
+        return;
       }
-      const data = await res.json();
 
-      localStorage.setItem("cvm_token", data.token);
-      localStorage.setItem("cvm_username", username);
-      localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
+      const endpoint = isSignup ? "/signup" : "/login";
+      try {
+        const res = await fetch(WORKER_BASE + endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || "Failed to authenticate");
+        }
+        const data = await res.json();
 
-      finishAuth();
-    } catch (err) {
-      errorEl.textContent = err.message;
-    }
-  });
+        localStorage.setItem("cvm_token", data.token);
+        localStorage.setItem("cvm_username", username);
+        localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
+
+        finishAuth();
+      } catch (err) {
+        if (errorEl) errorEl.textContent = err.message;
+      }
+    });
+  }
 });

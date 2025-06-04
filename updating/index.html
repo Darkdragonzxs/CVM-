@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Updating...</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Impact, sans-serif;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      padding: 20px;
+      border: 2px solid #fff;
+      background: #333;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+      border-radius: 10px;
+      text-align: center;
+    }
+    .main-text {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .sub-text {
+      font-size: 16px;
+      margin: 10px 0 0;
+    }
+    .light {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+      pointer-events: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div class="light"></div>
+  <div class="container">
+    <div class="box">
+      <p class="main-text">Currently still updating...</p>
+      <p class="sub-text">Check back later!</p>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('mousemove', (e) => {
+      const light = document.querySelector('.light');
+      light.style.left = `${e.clientX - 75}px`;
+      light.style.top = `${e.clientY - 75}px`;
+    });
+  </script>
+</body>
+</html>

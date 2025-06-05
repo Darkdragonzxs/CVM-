@@ -253,7 +253,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Guest access
-  guestBtn.addEventListener("click", finishAuth);
+  guestBtn.addEventListener("click", () => {
+  // 1) Clear out any previous session flags
+  localStorage.removeItem("cvm_token");
+  localStorage.removeItem("cvm_premium");
+  localStorage.removeItem("cvm_username");
+  // 2) Then proceed to finishAuth (hides overlay and starts the app)
+  finishAuth();
+});
 
   // Toggle login/signup UI
   toggle.addEventListener("click", () => {

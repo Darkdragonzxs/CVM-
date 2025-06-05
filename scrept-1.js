@@ -1,10 +1,6 @@
 import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js";
 
 ////////////////////////////////////////////////////////////////////////////////
-function isUserGuest() {
-  if (isUserPremium()) return false; // ignore if premium
-  return !localStorage.getItem("cvm_token"); // no token = guest
-}
 // 1) YOUR PREMIUM CHECKER
 function isUserPremium() {
   const token = localStorage.getItem("cvm_token");
@@ -180,7 +176,14 @@ function getUsername() {
 
   // ======== timer ========
   function startTimer() {
-    let t = isUserPremium() ? 40 * 60 : isUserGuest() ? 30 * 60 : 20 * 60;
+    let t;
+if (isUserPremium()) {
+  t = 40 * 60; // Premium user
+} else if (localStorage.getItem("cvm_token")) {
+  t = 30 * 60; // Logged-in (non-premium)
+} else {
+  t = 20 * 60; // Guest (no login at all)
+}
     updateTimerDisplay(t);
     const iv = setInterval(() => {
       if (t > 0) {

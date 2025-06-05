@@ -46,7 +46,7 @@ if (isUserPremium()) {
     const txt = elem.textContent.trim();
     if (txt === "What is premium?") {
       elem.textContent = " ";
-    } else if (txt === "Why is there a time limit?") {
+    } else if (txt === "Why is there a time limit, and what is the point of having an account?") {
       elem.textContent = " ";
     }
   });

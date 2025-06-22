@@ -1,36 +1,25 @@
 import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js";
 
-////////////////////////////////////////////////////////////////////////////////
-// 1) YOUR PREMIUM CHECKER
 function isUserPremium() {
   const token = localStorage.getItem("cvm_token");
   if (!token) return false;
   return localStorage.getItem("cvm_premium") === "1";
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// 2) EVERYTHING THAT USED TO LIVE IN DOMContentLoaded
-
 function initApp() {
-  // ======== apply premium theme ========
-  // Premium theme toggle
-// Premium theme toggle
-// Premium theme toggle
 if (isUserPremium()) {
   document.documentElement.classList.add("premium-theme");
 } else {
   document.documentElement.classList.remove("premium-theme");
 }
 
-// ======== Replace content if user is premium ========
 if (isUserPremium()) {
-  // Change the <h2>
+
   const warningH2 = document.querySelector('#warning h2');
   if (warningH2) {
     warningH2.textContent = "Thanks for buying premium and using CVM!";
   }
 
-  // Change the second paragraph inside #warning .overlay-content
   const paras = document.querySelectorAll('#warning .overlay-content p');
   if (paras[1]) {
     paras[1].textContent =
@@ -41,7 +30,6 @@ if (isUserPremium()) {
       `If you are enjoying premium, consider subscribing to my <a href="https://www.youtube.com/@wilburzenith" target="_blank" style="color:#55C629; text-decoration:underline;">YrouTrube</a> channel!`;
   }
 
-  // Replace both <i> cases in one loop
   document.querySelectorAll('#warning .overlay-content i').forEach(elem => {
     const txt = elem.textContent.trim();
     if (txt === "What is premium?") {
@@ -51,7 +39,6 @@ if (isUserPremium()) {
     }
   });
 
-  // Replace #server-switch content
   const serverSwitch = document.getElementById('server-switch');
   if (serverSwitch) {
     serverSwitch.innerHTML = `
@@ -60,7 +47,6 @@ if (isUserPremium()) {
     `;
   }
 
-  // ======== Add personalized greeting below h2 ========
   const hour = new Date().getHours();
   const timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
   const username = localStorage.getItem("cvm_username") || "User";
@@ -77,7 +63,6 @@ if (isUserPremium()) {
   }
 }
 
-// Helper function to get current time of day string
 function getTimeOfDay() {
   const hour = new Date().getHours();
   if (hour < 12) return "morning";
@@ -85,15 +70,12 @@ function getTimeOfDay() {
   return "evening";
 }
 
-// Helper function to get username from localStorage (or fallback)
 function getUsername() {
   return localStorage.getItem("cvm_username") || "User";
 }
 
-  // ======== grab our selected serverUrl ========
   let serverUrl = document.querySelector('#server-switch button.selected').dataset.url;
 
-  // ======== server-switch listener ========
   document.querySelectorAll('#server-switch button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#server-switch button')
@@ -103,7 +85,6 @@ function getUsername() {
     });
   });
 
-  // ======== fullscreen toggle ========
   const fsWrapper = document.getElementById('fullscreen-timer-wrapper');
   const fsTimer   = document.getElementById('fullscreen-timer');
   const toggleBtn = document.getElementById('toggle-timer-btn');
@@ -113,7 +94,6 @@ function getUsername() {
     toggleBtn.textContent = hidden ? '<' : '>';
   });
 
-  // ======== main start() ========
   async function start() {
     setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
     try {
@@ -135,7 +115,6 @@ function getUsername() {
     }
   }
 
-  // ======== overlay & timer wiring ========
   let minuteAlertShown = false, timeoutExpired = false;
   document.getElementById('acknowledge-checkbox').addEventListener('change', e =>
     document.getElementById('close-warning').disabled = !e.target.checked

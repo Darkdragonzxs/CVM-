@@ -190,12 +190,13 @@ if (isUserPremium()) {
   }
 
   // ======== key blocking ========
-  document.addEventListener('keydown', e => {
+document.addEventListener('keydown', e => {
+  const key = e.key.toLowerCase();
+
   if (
-    (e.ctrlKey && ['r', 'p', 's', 'w', 'n', 't'].includes(e.key.toLowerCase())) ||
-    e.metaKey ||
-    (e.altKey && ['Tab', 'ArrowLeft', 'ArrowRight'].includes(e.key)) ||
-    ['F1', 'F5'].includes(e.key)
+    (e.ctrlKey && ['r', 'p', 's', 'w', 'n', 't'].includes(key)) ||
+    (e.metaKey && ['r', 'p', 's', 'w', 'n', 't'].includes(key)) ||
+    e.key === 'F5'
   ) {
     e.preventDefault();
   }

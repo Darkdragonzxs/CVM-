@@ -191,15 +191,16 @@ if (isUserPremium()) {
 
   // ======== key blocking ========
   document.addEventListener('keydown', e => {
-    if (e.ctrlKey) {
-      if (!['c','v','C','V'].includes(e.key)) e.preventDefault();
-    } else if (e.altKey||e.metaKey) {
-      e.preventDefault();
-    } else if (['F1','F5','Tab','Escape'].includes(e.key)) {
-      e.preventDefault();
-    }
-  });
-}
+  if (
+    (e.ctrlKey && ['r', 'p', 's', 'w', 'n', 't'].includes(e.key.toLowerCase())) ||
+    e.metaKey ||
+    (e.altKey && ['Tab', 'ArrowLeft', 'ArrowRight'].includes(e.key)) ||
+    ['F1', 'F5'].includes(e.key)
+  ) {
+    e.preventDefault();
+  }
+});
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3) HOOKING UP AUTH FLOW

@@ -191,15 +191,21 @@ if (isUserPremium()) {
 
   // ======== key blocking ========
 document.addEventListener('keydown', e => {
-  const key = e.key.toLowerCase();
+  const key = e.key;
+  const lowerKey = key.toLowerCase();
 
-  if (
-    (e.ctrlKey && ['r', 'p', 's', 'w', 'n', 't'].includes(key)) ||
-    (e.metaKey && ['r', 'p', 's', 'w', 'n', 't'].includes(key)) ||
-    e.key === 'F5'
-  ) {
+  const allowedCtrlKeys = ['c', 'v', 'x', 'z', 'a'];
+
+  if (e.ctrlKey || e.metaKey) {
+    if (!allowedCtrlKeys.includes(lowerKey)) {
+      e.preventDefault();
+    }
+  }
+
+  if (['F1', 'F5'].includes(key)) {
     e.preventDefault();
   }
+
 });
 
 

@@ -61,7 +61,6 @@ if (isUserPremium()) {
     greeting.style.marginTop = "8px";
     h2.insertAdjacentElement("afterend", greeting);
   }
-  }
 }
 
 function getTimeOfDay() {
@@ -191,25 +190,16 @@ if (isUserPremium()) {
   }
 
   // ======== key blocking ========
-document.addEventListener('keydown', e => {
-  const key = e.key;
-  const lowerKey = key.toLowerCase();
-
-  const allowedKeys = ['c', 'v', 'x', 'z', 'a'];
-
-  if ((e.ctrlKey || e.metaKey) && allowedKeys.includes(lowerKey)) return;
-
-  if ((e.ctrlKey || e.metaKey) && ['r', 'p', 's', 'w', 'n', 't'].includes(lowerKey)) {
-    e.preventDefault();
-    return;
-  }
-
-  if (['F1', 'F5'].includes(key)) {
-    e.preventDefault();
-    return;
-  }
-});
-
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey) {
+      if (!['c','v','C','V'].includes(e.key)) e.preventDefault();
+    } else if (e.altKey||e.metaKey) {
+      e.preventDefault();
+    } else if (['F1','F5','Tab','Escape'].includes(e.key)) {
+      e.preventDefault();
+    }
+  });
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3) HOOKING UP AUTH FLOW
@@ -283,4 +273,13 @@ localStorage.setItem("cvm_token", data.token);
 localStorage.setItem("cvm_username", username);
 localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
 
-finishAuth();
+if (isSignup) {
+  finishAuth();
+} else {
+  finishAuth();
+}
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  });
+});

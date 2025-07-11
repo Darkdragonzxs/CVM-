@@ -194,18 +194,19 @@ document.addEventListener('keydown', e => {
   const key = e.key;
   const lowerKey = key.toLowerCase();
 
-  const allowedCtrlKeys = ['c', 'v', 'x', 'z', 'a'];
+  const allowedKeys = ['c', 'v', 'x', 'z', 'a'];
 
-  if (e.ctrlKey || e.metaKey) {
-    if (!allowedCtrlKeys.includes(lowerKey)) {
-      e.preventDefault();
-    }
+  if ((e.ctrlKey || e.metaKey) && allowedKeys.includes(lowerKey)) return;
+
+  if ((e.ctrlKey || e.metaKey) && ['r', 'p', 's', 'w', 'n', 't'].includes(lowerKey)) {
+    e.preventDefault();
+    return;
   }
 
   if (['F1', 'F5'].includes(key)) {
     e.preventDefault();
+    return;
   }
-
 });
 
 

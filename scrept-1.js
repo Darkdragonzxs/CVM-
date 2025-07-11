@@ -282,13 +282,12 @@ localStorage.setItem("cvm_token", data.token);
 localStorage.setItem("cvm_username", username);
 localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
 
-if (isSignup) {
-  finishAuth();
-} else {
-  finishAuth();
+try {
+  if (isSignup) {
+    finishAuth();
+  } else {
+    finishAuth();
+  }
+} catch (err) {
+  errorEl.textContent = err.message;
 }
-    } catch (err) {
-      errorEl.textContent = err.message;
-    }
-  });
-});

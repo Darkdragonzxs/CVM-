@@ -275,8 +275,10 @@ localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
 
 if (isSignup) {
   finishAuth();
+  console.log("CVM is deprecated!")
 } else {
   finishAuth();
+  console.log("CVM is deprecated!")
 }
     } catch (err) {
       errorEl.textContent = err.message;

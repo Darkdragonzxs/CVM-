@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const overlay = document.getElementById("overlay");
 
-    const WORKER_BASE = "https://vos-acc.grady.lol";
+    const WORKER_BASE = "https://cvm-accounts.stilla-rrms-wlwv-k12-or-us.workers.dev";
     let isSignup = false;
 
     const titleEl = document.getElementById("auth-title");

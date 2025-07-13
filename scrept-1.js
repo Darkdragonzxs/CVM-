@@ -23,7 +23,7 @@ if (isUserPremium()) {
   const paras = document.querySelectorAll('#warning .overlay-content p');
   if (paras[1]) {
     paras[1].textContent =
-      "With premium, you got a special theme, 40 minutes of time, AND are the first priority to fixing, CVM is also updated frequently, so you will get early updates too!";
+      "With premium, you got a special theme, 40 minutes of time, AND are the first priority to fixing, VOS is also updated frequently, so you will get early updates too!";
   }
   if (paras[2]) {
     paras[2].innerHTML = 
@@ -42,8 +42,8 @@ if (isUserPremium()) {
   const serverSwitch = document.getElementById('server-switch');
   if (serverSwitch) {
     serverSwitch.innerHTML = `
-      <button data-url="https://hungry-hippo.cvm.rest/" class="selected">Main 🟢</button>
-      <button data-url="https://rubber-ducky.cvm.rest/">1 🟢</button>
+      <button data-url="https://hungry-hippo.grady.lol/" class="selected">Main 🟢</button>
+      <button data-url="https://rubber-ducky.grady.lol/">1 🟢</button>
     `;
   }
 

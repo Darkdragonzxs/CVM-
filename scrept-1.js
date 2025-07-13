@@ -1,4 +1,4 @@
-import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js";
+import Hyperbeam from "/v0/vm/index.js";
 
 function isUserPremium() {
   const token = localStorage.getItem("cvm_token");

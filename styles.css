@@ -1,3 +1,6 @@
+html, body {
+  font-family: Impact, Poppins, "Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 /* —— AUTH OVERLAY STYLES —— */
     #auth-overlay {
       position: fixed;

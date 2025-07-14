@@ -17,7 +17,7 @@ if (isUserPremium()) {
 
   const warningH2 = document.querySelector('#warning h2');
   if (warningH2) {
-    warningH2.textContent = "Thanks for buying premium and using CVM!";
+    warningH2.textContent = "Thanks for buying premium and using VOS!";
   }
 
   const paras = document.querySelectorAll('#warning .overlay-content p');

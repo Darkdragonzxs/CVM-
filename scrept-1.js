@@ -42,8 +42,8 @@ if (isUserPremium()) {
   const serverSwitch = document.getElementById('server-switch');
   if (serverSwitch) {
     serverSwitch.innerHTML = `
-      <button data-url="https://hungry-hippo.cvm.rest/" class="selected">Main 🟢</button>
-      <button data-url="https://rubber-ducky.cvm.rest/">1 🟢</button>
+      <button data-url="https://sw93kf.grady.lol" class="selected">Main 🟢</button>
+      <button data-url="https://40kf9s.grady.lol">1 🟢</button>
     `;
   }
 

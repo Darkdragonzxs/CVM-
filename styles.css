@@ -368,7 +368,8 @@ html, body {
   top: 0 !important;
   bottom: 0 !important;
   width: 100vw !important;
-  height: 100vh
+  height: 100vh !important;
+  min-height: 100vh !important;
   border-radius: 0 !important;
   z-index: 10001 !important;
   box-shadow: 0 0 80px #00eaff44 inset !important;
@@ -376,6 +377,14 @@ html, body {
   background-color: #020b1c !important;
   transition: all 0.2s cubic-bezier(.75,0,.25,1);
 }
+
+:fullscreen #fullscreen-timer-wrapper,
+:-webkit-full-screen #fullscreen-timer-wrapper {
+  display: flex !important;
+  z-index: 10002 !important;
+}
+
+
 
 #error-message {
   color: #fc3b8c;
@@ -454,19 +463,28 @@ html, body {
   filter: drop-shadow(0 0 6px #00eaffcc);
 }
 #fullscreen-timer-wrapper {
-  position: fixed; 
-  top: 10px; 
-  right: 10px; 
-  z-index: 9999;
-  background: rgba(8,12,28,0.89); 
-  padding: 7px 12px; 
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 10002;
+  background: rgba(8,12,28,0.89);
+  padding: 7px 12px;
   border-radius: 10px;
-  display: none; 
-  align-items: center; 
-  gap: 8px; 
+  align-items: center;
+  gap: 8px;
   font-size: 18px;
   box-shadow: 0 0 12px #00eaff33;
+  /* The wrapper is always visible in fullscreen */
 }
+:fullscreen #fullscreen-timer,
+:-webkit-full-screen #fullscreen-timer {
+  display: inline !important;
+}
+:fullscreen #bottom-bar,
+:-webkit-full-screen #bottom-bar {
+  display: none !important;
+}
+
 #fullscreen-timer {
   font-size: 30px; 
   font-weight: bold; 

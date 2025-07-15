@@ -2,456 +2,312 @@ html, body {
   font-family: Impact, Poppins, "Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 /* —— AUTH OVERLAY STYLES —— */
-    #auth-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 2000;
-    }
-    #auth-box {
-      background: #1e2a1a;
-      padding: 30px; border-radius: 12px;
-      width: 320px; text-align: center;
-      box-shadow: 0 0 15px rgba(0,0,0,0.8);
-    }
-    #auth-box h2 { color: #7cbf6a; margin-bottom: 20px; }
-    #auth-box input {
-      width: 100%; padding: 8px; margin: 8px 0;
-      border: 1px solid #355e2a; background: #0d1a10; color: white;
-      border-radius: 4px;
-    }
-    #auth-box button {
-      width: 100%; padding: 10px; margin-top: 12px;
-      border: none; border-radius: 6px; font-size: 16px;
-      background: #4b8b3b; color: white; cursor: pointer;
-    }
-    #auth-box button:not(:last-child) { margin-bottom: 8px; }
-    #auth-toggle, #auth-guest {
-      background: none; border: none; color: #55C629;
-      text-decoration: underline; margin-top: 10px; cursor: pointer;
-    }
-    #auth-error { color: #ff4444; min-height: 18px; margin-top: 8px; }
-    /* —— END AUTH OVERLAY —— */
-/* Page-load alert overlay */
-/* Page-load alert overlay */
-/* --------------------------------------------------
-   OVERLAY & FADE
-   -------------------------------------------------- */
-/* Overlay full screen and centering */
-        .\32 030 {
-      position: relative;
-      display: inline-block;
-      max-width: 100%;
-    }
-
-    .\32 030 img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-      -webkit-user-drag: none;
-      user-drag: none;
-    }
-
-    .\32 030 img[draggable="false"] {
-      pointer-events: none;
-    }
-
-    .\32 030 .overlay-text {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-weight: bold;
-      color: purple;
-      background: rgba(255, 255, 255, 0.7);
-      padding: 2px 4px;
-      border-radius: 3px;
-    }
-#alertBox {
+#auth-overlay {
   position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(20, 40, 10, 0.95);
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-
-  transition: opacity 0.76s ease;
-  opacity: 1;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(10, 20, 40, 0.98);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+  box-shadow: 0 0 80px 10px #00eaff44 inset;
 }
-
-#alertBox.fade-out {
-  opacity: 0;
+#auth-box {
+  background: linear-gradient(140deg, #051848 50%, #003e50 90%, #010d20 100%);
+  padding: 30px; border-radius: 16px;
+  width: 320px; text-align: center;
+  box-shadow: 0 0 35px #0ff4f4b0, 0 0 3px #00eaff88;
+  border: 2px solid #0ff4f4;
 }
-
-/* Inner box with styles */
-#alertBox .alert-content {
-  background: linear-gradient(160deg, #2f4f1c, #5ca94b);
-  box-shadow: 0 0 30px #a5e168;
-  border-radius: 18px;
-  padding: 28px;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  color: #e3ffd0;
-  font-family: Impact, sans-serif;
+#auth-box h2 {
+  color: #24f9ff;
+  margin-bottom: 20px;
+  text-shadow: 0 0 12px #00eaffcc, 0 0 4px #0ff4f4aa;
 }
-/* Text styling */
-#alertBox .alert-content h2 {
-  margin: 0 0 14px;
-  color: #c6ff9b;
-  font-size: 1.8em;
-  font-weight: 700;
-}
-
-#alertBox .alert-content p {
-  margin: 0 0 22px;
-  color: #e0ffd0;
-  line-height: 1.5;
-  font-size: 1.05em;
-}
-
-/* Button styling */
-#alertBox .alert-content button {
-  background: linear-gradient(to bottom, #7cd34c, #4d8025);
-  color: #f2ffe5;
-  font-weight: 700;
-  border: none;
-  padding: 12px 26px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 1em;
-  box-shadow: 0 4px 8px #a0ea6eaa;
-  transition: transform 0.2s ease, background 0.3s ease;
-}
-
-#alertBox .alert-content button:hover {
-  background: linear-gradient(to bottom, #8ae659, #538c2c);
-  transform: scale(1.04);
-}
-    .alert-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  }
-
-    /* Make sure the alert overlay covers the whole screen and is centered */
-#alert-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
-  display: none; /* start hidden */
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* super high to be on top */
-}
-
-/* The alert box itself */
-#alert-box {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 8px;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-/* OK button styling */
-#alert-ok-btn {
-  margin-top: 20px;
-  padding: 8px 15px;
-  font-size: 16px;
-  cursor: pointer;
-}
-    
-    body, html {
-      margin: 0;
-      height: 100%;
-      width: 100%;
-      overflow-x: hidden;
-      background: black;
-      font-family: Impact, sans-serif;
-      color: white;
-      position: relative;
-    }
-    *, *::before, *::after { box-sizing: border-box; }
-
-    #hyperbeam-container {
-      width: 100%;
-      height: calc(100vh - 50px);
-      border: 4px solid;
-      border-image: linear-gradient(to bottom, #555555, #0d0d0d) 1;
-      background-color: #000;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    #error-message {
-      color: #ff4444; text-align: center; padding: 20px;
-      display: none; font-weight: bold; font-size: 18px; margin-top: 10px;
-    }
-
-    #bottom-bar {
-      position: absolute; bottom: 0; width: 100%; height: 50px;
-      background: linear-gradient(to top,
-        rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.2) 2%, #427B2C 98%);
-      display: flex; align-items: center; padding: 0 20px;
-      box-shadow: 0 -3px 10px rgba(0,0,0,0.6);
-      border-top-left-radius: 12px; border-top-right-radius: 12px;
-    }
-    #signout-btn {
-  margin-left: auto;         /* push this button as far right as it can go */
-  position: relative;        /* so you can layer it if needed */
-  background: #b33;
-  border: none;
+#auth-box input {
+  width: 100%; padding: 8px; margin: 8px 0;
+  border: 1.5px solid #1f9cff; background: #06112b; color: #aefcff;
   border-radius: 6px;
-  padding: 6px 12px;
-  color: white;
-  cursor: pointer;
-  font-family: Impact, sans-serif;
-  display: none;             /* hidden by default */
-  z-index: 9999
+  box-shadow: 0 0 8px #08bfff44;
 }
-    #timer { font-size: 30px; font-weight: bold; }
-    #fullscreen-btn { background: none; border: none; margin-left: 20px; cursor: pointer; }
-    #fullscreen-btn img { height: 40px; filter: invert(1); }
+#auth-box button {
+  width: 100%; padding: 10px; margin-top: 12px;
+  border: none; border-radius: 8px; font-size: 16px;
+  background: linear-gradient(90deg, #0ff4f4, #0c70c2, #0e30d7);
+  color: #fff; cursor: pointer;
+  font-weight: 900;
+  box-shadow: 0 0 16px #0ff4f499, 0 0 5px #1ad1ffcc inset;
+  transition: filter 0.2s, background 0.2s;
+}
+#auth-box button:not(:last-child) { margin-bottom: 8px; }
+#auth-toggle, #auth-guest {
+  background: none; border: none; color: #0ff4f4;
+  text-decoration: underline; margin-top: 10px; cursor: pointer;
+  text-shadow: 0 0 8px #0ff4f488;
+}
+#auth-error { color: #fc3b8c; min-height: 18px; margin-top: 8px; text-shadow: 0 0 8px #ff006e55; }
 
-    /* Wrapper for fullscreen timer + toggle button */
-    #fullscreen-timer-wrapper {
-      position: fixed; top: 10px; right: 10px; z-index: 9999;
-      background: rgba(0,0,0,0.7); padding: 6px 10px; border-radius: 8px;
-      display: none; align-items: center; gap: 8px; font-size: 16px;
-    }
-    #fullscreen-timer { font-size: 30px; font-weight: bold; color: white; }
-    #toggle-timer-btn {
-      background: none; border: none; color: white;
-      font-size: 24px; line-height: 1; cursor: pointer;
-    }
-
-    #copyright-text {
-      margin-left: auto; margin-right: 20px;
-      font-size: 14px; opacity: 0.85; user-select: none;
-    }
-
-    .overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      display: none; justify-content: center; align-items: center;
-      z-index: 1000;
-    }
-    .overlay.active { display: flex; }
-   .overlay-content {
+/* OVERLAY & FADE */
+.overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(10, 22, 45, 0.93);
+  display: none; justify-content: center; align-items: center;
+  z-index: 1000;
+  box-shadow: 0 0 120px 10px #00eaff44 inset;
+}
+.overlay.active { display: flex; }
+.overlay-content {
   width: 90vw;
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
   padding: 4vw;
   font-size: 2.5vw;
-  background: #222;
-  color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  background: linear-gradient(120deg, #072359 70%, #082c43 100%);
+  color: #aefcff;
+  border-radius: 16px;
+  box-shadow: 0 0 24px #00eaff99, 0 0 8px #0ff4f488;
 }
-
-/* For larger screens, scale font size back to normal */
 @media (min-width: 600px) {
   .overlay-content {
     font-size: 14px;
     padding: 24px;
   }
 }
-    .overlay-content h2 { margin-top: 0; font-size: 32px; color: #7cbf6a; }
-    .overlay-content p { margin: 15px 0; line-height: 1.5; }
-    .overlay-content button {
-      margin: 10px 5px 0; padding: 10px 20px; font-size: 18px;
-      border: none; border-radius: 6px; cursor: pointer;
-      font-family: Impact, sans-serif;
-      background: linear-gradient(to bottom, #4b8b3b, #2f5822);
-      color: white; transition: background 0.3s ease, transform 0.2s;
-    }
-    .overlay-content button:hover:not(:disabled) {
-      background: linear-gradient(to bottom, #5ba44a, #376e2a);
-      transform: scale(1.03);
-    }
-    .overlay-content button:disabled {
-      background: #2a4f1d; cursor: not-allowed;
-    }
-
-   #server-switch {
-  display: flex;
-  flex-wrap: wrap; /* allow wrapping */
-  gap: 10px;
-  justify-content: center;
-  margin: 20px 0;
-  max-width: 600px; /* optional, keeps layout neat */
-  margin-left: auto;
-  margin-right: auto;
+.overlay-content h2 {
+  margin-top: 0; font-size: 32px; color: #0ff4f4; text-shadow: 0 0 10px #00eaffcc;
 }
-
-#server-switch button {
-  flex: 0 0 calc(25% - 10px); /* 4 buttons per row */
-  padding: 10px;
+.overlay-content p { margin: 15px 0; line-height: 1.5; }
+.overlay-content button {
+  margin: 10px 5px 0; padding: 10px 20px; font-size: 18px;
+  border: none; border-radius: 8px; cursor: pointer;
   font-family: Impact, sans-serif;
-  background: linear-gradient(to bottom, #444, #222);
-  color: white;
-  border: 2px solid #555;
-  border-radius: 6px;
+  background: linear-gradient(90deg, #0ff4f4 10%, #005b80 90%);
+  color: #fff; font-weight: bold;
+  box-shadow: 0 0 14px #00eaff99;
+  transition: background 0.3s, transform 0.2s;
+}
+.overlay-content button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #2defff, #0066ff);
+  filter: brightness(1.2) drop-shadow(0 0 10px #0ff4f4cc);
+  transform: scale(1.03);
+}
+.overlay-content button:disabled {
+  background: #052440; cursor: not-allowed;
+}
+
+/* Alert overlay */
+#alertBox {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(8, 18, 48, 0.98);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: opacity 0.76s ease;
+  opacity: 1;
+  box-shadow: 0 0 120px 10px #0ff4f477 inset;
+}
+#alertBox.fade-out { opacity: 0; }
+#alertBox .alert-content {
+  background: linear-gradient(135deg, #0e2a62 55%, #083557 100%);
+  box-shadow: 0 0 38px #00eaffc0, 0 0 4px #0ff4f488;
+  border-radius: 18px;
+  padding: 28px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  color: #aefcff;
+  font-family: Impact, sans-serif;
+}
+#alertBox .alert-content h2 {
+  margin: 0 0 14px;
+  color: #00eaff;
+  font-size: 1.8em;
+  font-weight: 700;
+  text-shadow: 0 0 10px #0ff4f4bb;
+}
+#alertBox .alert-content p {
+  margin: 0 0 22px;
+  color: #9be9ff;
+  line-height: 1.5;
+  font-size: 1.05em;
+}
+#alertBox .alert-content button {
+  background: linear-gradient(90deg, #00eaff 10%, #1e70fa 90%);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.3s, border-color 0.3s;
-  box-sizing: border-box;
+  font-size: 1em;
+  box-shadow: 0 4px 24px #00eaffaa;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+#alertBox .alert-content button:hover {
+  background: linear-gradient(90deg, #3cfffe 20%, #27bbff 80%);
+  filter: brightness(1.1) drop-shadow(0 0 8px #0ff4f4cc);
+  transform: scale(1.04);
 }
 
-#server-switch button:not(.selected):hover {
-  background: linear-gradient(to bottom, #555, #2b2b2b);
-  border-color: #777;
+body, html {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background: linear-gradient(120deg, #050f28, #0c1d34 70%, #02114b 100%);
+  font-family: Impact, sans-serif;
+  color: #aefcff;
+  position: relative;
 }
+*, *::before, *::after { box-sizing: border-box; }
 
-#server-switch .selected {
-  background: linear-gradient(to bottom, #6ea65a, #4b8b3b);
-  border-color: #89c978;
+#hyperbeam-container {
+  width: 100%;
+  height: calc(100vh - 50px);
+  border: 4px solid;
+  border-image: linear-gradient(to bottom, #1e2a56, #0ff4f4 90%, #051848 100%) 1;
+  background-color: #020b1c;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 38px #00eaff33 inset;
+}
+#error-message {
+  color: #fc3b8c; text-align: center; padding: 20px;
+  display: none; font-weight: bold; font-size: 18px; margin-top: 10px;
+  text-shadow: 0 0 6px #ff006e99;
+}
+#bottom-bar {
+  position: absolute; bottom: 0; width: 100%; height: 50px;
+  background: linear-gradient(90deg, #001d2e 5%, #0ff4f4 90%);
+  display: flex; align-items: center; padding: 0 20px;
+  box-shadow: 0 -3px 16px #0ff4f488, 0 0 20px #00104099 inset;
+  border-top-left-radius: 12px; border-top-right-radius: 12px;
+}
+#signout-btn {
+  margin-left: auto;
+  position: relative;
+  background: linear-gradient(90deg, #00eaff 10%, #1e70fa 90%);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 16px;
   color: white;
+  cursor: pointer;
+  font-family: Impact, sans-serif;
+  box-shadow: 0 0 16px #00eaff88;
   font-weight: bold;
+  z-index: 9999;
+  transition: filter 0.2s, background 0.2s;
 }
-
-    :fullscreen, :-webkit-full-screen { overflow: hidden !important; }
-    :fullscreen #bottom-bar, :-webkit-full-screen #bottom-bar { display: none !important; }
-    :fullscreen #hyperbeam-container,
-    :-webkit-full-screen #hyperbeam-container {
-      height: 100% !important; box-sizing: border-box;
-    }
-    .fullscreen-mode { height: 100vh !important; box-sizing: border-box; }
-    /* 1) Target only the CVM image, set its height, and absorb all available space to its left */
+#signout-btn:hover {
+  filter: brightness(1.2) drop-shadow(0 0 10px #00eaffcc);
+}
+#timer { font-size: 30px; font-weight: bold; color: #0ff4f4; text-shadow: 0 0 6px #00eaff99; }
+#fullscreen-btn { background: none; border: none; margin-left: 20px; cursor: pointer; }
+#fullscreen-btn img { height: 40px; filter: drop-shadow(0 0 4px #0ff4f4); }
+#fullscreen-timer-wrapper {
+  position: fixed; top: 10px; right: 10px; z-index: 9999;
+  background: rgba(8,12,28,0.88); padding: 6px 10px; border-radius: 10px;
+  display: none; align-items: center; gap: 8px; font-size: 16px;
+  box-shadow: 0 0 12px #00eaff33;
+}
+#fullscreen-timer { font-size: 30px; font-weight: bold; color: #0ff4f4; }
+#toggle-timer-btn {
+  background: none; border: none; color: #0ff4f4;
+  font-size: 24px; line-height: 1; cursor: pointer;
+}
+#copyright-text {
+  margin-left: auto; margin-right: 20px;
+  font-size: 14px; opacity: 0.85; user-select: none;
+  color: #36ffff;
+  text-shadow: 0 0 8px #00eaff44;
+}
 #bottom-bar img[alt="CVM"] {
   height: 40px;
-  margin-left: auto;    /* pushes the image (and everything after it) to the right edge */
-  margin-right: 8px;    /* small gap between the image and the text */
+  margin-left: auto;
+  margin-right: 8px;
+  filter: drop-shadow(0 0 6px #00eaffcc);
 }
 
-/* 2) Reset the auto-margin on the copyright so it sits immediately after the logo */
-#copyright-text {
-  margin-left: 0;       /* cancel the existing “push-everything-left” rule */
-  margin-right: 20px;   /* keep your existing right padding */
-}
-
-/* Base styles remain untouched */
-
-/* Premium theme overrides */
-    /* Unified Scrollbar Style for All Users */
-/* Blended Regular + Premium Scrollbar */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: #111; /* Dark regular base */
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #555 0%, #ffd700 50%, #55C629 100%);
-  border-radius: 6px;
-  border: 2px solid #222;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #777 0%, #ffe000 50%, #66e142 100%);
-}
+/* Premium theme neon version */
 .premium-theme body, .premium-theme html {
-  background: linear-gradient(135deg, #203520, #4CAF50) !important;
-  color: #DFFFD6 !important;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+  background: linear-gradient(120deg, #01092b, #1c227c 70%, #1ad6ff 100%) !important;
+  color: #fff !important;
+  font-family: Impact, Poppins, "Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  text-shadow: 0 0 8px #29faffcc;
 }
-
-/* Auth overlay premium overrides */
 .premium-theme #auth-overlay {
-  background: rgba(30, 60, 10, 0.95) !important;
+  background: rgba(18, 34, 90, 0.97) !important;
+  box-shadow: 0 0 120px #00eaff66 inset !important;
 }
-
 .premium-theme #auth-box {
-  background: linear-gradient(145deg, #2a4b10, #4b8b3b) !important;
-  box-shadow: 0 0 25px #88cc44 !important;
-  border-radius: 16px !important;
+  background: linear-gradient(135deg, #091fff, #00eaff 80%, #011021 100%) !important;
+  box-shadow: 0 0 60px #00eaffbb, 0 0 8px #00eaff44 !important;
+  border-radius: 22px !important;
+  border: 2.5px solid #29faff !important;
 }
-
 .premium-theme #auth-box h2 {
-  color: #a9e07b !important;
+  color: #f6ff88 !important;
+  text-shadow: 0 0 24px #faff24cc;
 }
-
 .premium-theme #auth-box input {
-  background: #223822 !important;
-  border: 1px solid #7cc24a !important;
-  color: #d0f4b4 !important;
-  border-radius: 8px !important;
-  padding: 10px !important;
+  background: #0e1449 !important;
+  border: 1.5px solid #37fff4 !important;
+  color: #faffff !important;
+  border-radius: 9px !important;
+  box-shadow: 0 0 14px #0ff4f488 !important;
 }
-
 .premium-theme #auth-box button {
-  background: linear-gradient(to bottom, #6abf3d, #3e7a15) !important;
-  color: #eaf9d2 !important;
-  font-weight: 700 !important;
-  border-radius: 10px !important;
-  cursor: pointer !important;
-  box-shadow: 0 4px 6px #88cc44aa !important;
+  background: linear-gradient(90deg, #00eaff 10%, #1c2aff 90%, #ff16e0 100%) !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 0 28px #0ff4f4dd, 0 0 9px #ff16e088 inset !important;
+  letter-spacing: 1.2px;
+  filter: brightness(1.1) drop-shadow(0 0 14px #00eaffcc);
 }
-
-/* Bottom bar premium */
+.premium-theme #auth-box button:hover {
+  background: linear-gradient(90deg, #faff24 20%, #00eaff 80%, #ff16e0 100%) !important;
+  filter: brightness(1.3) drop-shadow(0 0 18px #faff24cc);
+}
 .premium-theme #bottom-bar {
-  background: linear-gradient(90deg, #355e2a, #89c978) !important;
-  box-shadow: 0 -4px 15px #8bcc42cc !important;
-  border-top-left-radius: 20px !important;
-  border-top-right-radius: 20px !important;
+  background: linear-gradient(90deg, #0e1956 10%, #00eaff 80%, #faff24 100%) !important;
+  box-shadow: 0 -4px 28px #00eaffcc, 0 0 24px #1ad1ffcc inset !important;
+  border-top-left-radius: 22px !important;
+  border-top-right-radius: 22px !important;
 }
-
-/* Buttons premium */
 .premium-theme #signout-btn {
-  background: #5a9c29 !important;
-  box-shadow: 0 0 12px #a8e07c !important;
-  font-weight: 600 !important;
-  z-index: 9999
+  background: linear-gradient(90deg, #00eaff 0%, #faff24 100%) !important;
+  box-shadow: 0 0 32px #0ff4f4cc, 0 0 10px #faff24cc !important;
+  font-weight: bold !important;
+  text-shadow: 0 0 12px #faff24bb;
+  color: #161a2d !important;
+  border: none !important;
+  border-radius: 12px !important;
 }
-
-/* Overlay */
 .premium-theme .overlay {
-  background: rgba(20, 40, 10, 0.95) !important;
+  background: rgba(14, 24, 89, 0.93) !important;
+  box-shadow: 0 0 120px #00eaff77 inset !important;
 }
-
 .premium-theme .overlay-content {
-  background: linear-gradient(145deg, #295220, #4c9440) !important;
-  border: 2px solid #79c050 !important;
-  box-shadow: 0 0 20px #7dd041 !important;
+  background: linear-gradient(125deg, #1824c4, #00eaff 90%) !important;
+  border: 2.8px solid #faff24 !important;
+  box-shadow: 0 0 40px #29faff !important;
+  color: #fff !important;
 }
-
 .premium-theme .overlay-content h2 {
-  color: #b9f786 !important;
+  color: #faff24 !important;
+  text-shadow: 0 0 18px #faff24cc;
 }
-
 .premium-theme .overlay-content button {
-  background: linear-gradient(to bottom, #7cd34c, #4d8025) !important;
-  box-shadow: 0 0 10px #a0ea6e !important;
+  background: linear-gradient(90deg, #faff24 0%, #00eaff 100%) !important;
+  box-shadow: 0 0 18px #faff24cc !important;
+  color: #00202d !important;
+  font-weight: 900 !important;
+  text-shadow: 0 0 10px #00eaff88;
 }
-
-/* Server switch buttons premium */
 .premium-theme #server-switch button {
-  background: linear-gradient(to bottom, #456e26, #2d4b13) !important;
-  border-color: #6a9f33 !important;
-}
-
-.premium-theme #server-switch button:not(.selected):hover {
-  background: linear-gradient(to bottom, #578f33, #3d6b1a) !important;
-  border-color: #9cc95a !important;
-}
-
-.premium-theme #server-switch .selected {
-  background: linear-gradient(to bottom, #91c849, #4d8025) !important;
-  border-color: #ade874 !important;
-  color: #f0ffe1 !important;
-  font-weight: 700 !important;
-}
+  background: linear-gradient(90deg, #00eaff 10%, #faff24 90%) !important;
+  border-color: #

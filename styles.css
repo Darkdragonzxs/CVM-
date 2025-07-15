@@ -318,6 +318,7 @@ html, body {
 }
 
 /********** HYPERBEAM CONTAINER & ERRORS **********/
+/********** HYPERBEAM CONTAINER & ERRORS **********/
 #hyperbeam-container {
   width: 100%;
   height: calc(100vh - 50px);
@@ -329,7 +330,32 @@ html, body {
   box-shadow: 0 0 44px #00eaff22 inset;
   position: relative;
   z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: unset;
+  top: unset;
+  transition: all 0.2s cubic-bezier(.75,0,.25,1);
 }
+
+:fullscreen #hyperbeam-container,
+:-webkit-full-screen #hyperbeam-container {
+  /* Fullscreen mode: stretches and sits at screen bottom */
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  z-index: 9998 !important;
+  box-shadow: 0 0 80px #00eaff44 inset !important;
+  border-width: 0 !important;
+  background-color: #020b1c !important;
+}
+
+/* Restore all normal styles when not in fullscreen automatically */
+
 #error-message {
   color: #fc3b8c;
   text-align: center;

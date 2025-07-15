@@ -362,46 +362,69 @@ html, body {
 }
 :fullscreen #hyperbeam-container,
 :-webkit-full-screen #hyperbeam-container {
-  position: fixed !important;
-  left: 0 !important;
-  top: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-  max-height: 100vh !important;
-  border-radius: 0 !important;
-  border: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  box-shadow: 0 0 80px #00eaff44 inset !important;
-  background: #020b1c !important;
-  z-index: 10001 !important;
-  overflow: hidden !important;
-  display: block !important;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  border-radius: 0;
+  border: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 0 80px #00eaff44 inset;
+  background: #020b1c;
+  z-index: 10001;
+  overflow: hidden;
+  display: block;
+  /* SMOOTH ANIMATION for fullscreen in/out */
+  transition:
+    width 0.4s cubic-bezier(.75,0,.25,1),
+    height 0.4s cubic-bezier(.75,0,.25,1),
+    border-radius 0.3s cubic-bezier(.75,0,.25,1),
+    box-shadow 0.3s cubic-bezier(.75,0,.25,1),
+    background 0.3s cubic-bezier(.75,0,.25,1),
+    left 0.4s cubic-bezier(.75,0,.25,1),
+    top 0.4s cubic-bezier(.75,0,.25,1),
+    right 0.4s cubic-bezier(.75,0,.25,1),
+    bottom 0.4s cubic-bezier(.75,0,.25,1),
+    margin 0.3s cubic-bezier(.75,0,.25,1),
+    padding 0.3s cubic-bezier(.75,0,.25,1),
+    position 0.25s cubic-bezier(.75,0,.25,1);
 }
 
 :fullscreen #hyperbeam-container iframe,
 :-webkit-full-screen #hyperbeam-container iframe {
-  width: 100vw !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-  max-height: 100vh !important;
-  display: block !important;
-  border: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  position: absolute !important;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  display: block;
+  border: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
   top: 0; left: 0;
-  background: #020b1c !important;
+  background: #020b1c;
+  z-index: 10002;
+  /* Smooth animation for iframe too */
+  transition:
+    width 0.4s cubic-bezier(.75,0,.25,1),
+    height 0.4s cubic-bezier(.75,0,.25,1),
+    left 0.4s cubic-bezier(.75,0,.25,1),
+    top 0.4s cubic-bezier(.75,0,.25,1),
+    background 0.25s cubic-bezier(.75,0,.25,1),
+    position 0.25s cubic-bezier(.75,0,.25,1);
 }
 
 :fullscreen #fullscreen-timer-wrapper,
 :-webkit-full-screen #fullscreen-timer-wrapper {
   display: flex !important;
-  z-index: 10002 !important;
+  z-index: 10003 !important;
+  /* Smooth fade if you want: */
+  transition: opacity 0.2s cubic-bezier(.75,0,.25,1);
 }
-
-
 
 #error-message {
   color: #fc3b8c;

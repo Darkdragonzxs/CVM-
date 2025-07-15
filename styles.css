@@ -364,18 +364,20 @@ html, body {
 :-webkit-full-screen #hyperbeam-container {
   position: fixed !important;
   left: 0 !important;
-  right: 0 !important;
   top: 0 !important;
-  bottom: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
   min-height: 100vh !important;
+  max-height: 100vh !important;
   border-radius: 0 !important;
-  z-index: 10001 !important;
-  box-shadow: 0 0 80px #00eaff44 inset !important;
   border: none !important;
-  background-color: #020b1c !important;
-  transition: all 0.2s cubic-bezier(.75,0,.25,1);
+  margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: 0 0 80px #00eaff44 inset !important;
+  background: #020b1c !important;
+  z-index: 10001 !important;
+  overflow: hidden !important;
+  display: block !important;
 }
 
 :fullscreen #fullscreen-timer-wrapper,

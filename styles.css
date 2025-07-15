@@ -216,7 +216,7 @@ html, body {
   cursor: not-allowed;
 }
 
-/********** SERVER SWITCH (3x3 grid, visible selected) **********/
+/********** SERVER SWITCH (3x3 grid, ultra-visible selected) **********/
 #server-switch {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -237,32 +237,58 @@ html, body {
   border: 2px solid #009dcf;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.22s, border-color 0.22s, box-shadow 0.25s, color 0.22s;
+  transition: background 0.22s, border-color 0.22s, box-shadow 0.25s, color 0.22s, filter 0.16s, transform 0.15s;
   box-shadow: 0 0 12px #00eaff44, 0 2px 10px #02244799 inset;
   outline: none;
   position: relative;
   font-weight: bold;
 }
-#server-switch button:hover:not(.selected) {
+#server-switch button:hover:not(.selected):not(:focus) {
   background: linear-gradient(180deg, #046ca7 40%, #033e60 100%);
   border-color: #0ff4f4;
   color: #fff;
   box-shadow: 0 0 18px #00eaff77;
 }
-#server-switch button.selected, #server-switch button:focus {
-  background: linear-gradient(90deg, #0ff4f4 40%, #0072a8 100%);
-  border-color: #faff24;
-  color: #141f2d;
-  box-shadow: 0 0 18px #faff24, 0 0 12px #00eaff inset;
+
+/* SUPER VISIBLE SELECTED (and focus) */
+#server-switch button.selected,
+#server-switch button:focus {
+  background: linear-gradient(90deg, #0ff4f4 30%, #ffe100 120%);
+  border-color: #ffe100;
+  color: #142031;
+  font-weight: bold;
+  box-shadow: 0 0 30px #ffe100, 0 0 16px #0ff4f4 inset, 0 0 8px #fff;
   z-index: 2;
+  outline: none;
+  filter: brightness(1.15) saturate(1.25);
+  transform: scale(1.06) rotate(-2deg);
+  animation: selected-wiggle 0.32s 1;
 }
-#server-switch button.selected::after, #server-switch button:focus::after {
-  content: " ★";
-  font-size: 1.05em;
-  color: #faff24;
-  text-shadow: 0 0 8px #faff24, 0 0 3px #fff;
-  margin-left: 5px;
+#server-switch button.selected::after,
+#server-switch button:focus::after {
+  content: " ★ SELECTED";
+  font-size: 1.08em;
+  font-weight: bold;
+  color: #ffe100;
+  text-shadow: 0 0 10px #ffe100, 0 0 4px #0ff4f4;
+  margin-left: 10px;
   vertical-align: middle;
+  letter-spacing: 0.5px;
+}
+
+/* Wiggle on hover if selected */
+#server-switch button.selected:hover,
+#server-switch button:focus:hover {
+  filter: brightness(1.22) drop-shadow(0 0 16px #ffe100);
+  transform: scale(1.09) rotate(3deg);
+  transition: filter 0.13s, transform 0.13s;
+}
+
+@keyframes selected-wiggle {
+  0% { transform: scale(1.04) rotate(-4deg);}
+  25% { transform: scale(1.10) rotate(2deg);}
+  50% { transform: scale(1.06) rotate(-2deg);}
+  100% { transform: scale(1.06) rotate(-2deg);}
 }
 
 /********** MINUTE-WARNING, BLACK-NOTIF, BLACK-ALERT **********/
@@ -454,39 +480,42 @@ html, body {
   text-shadow: 0 0 9px #00eaff88 !important;
 }
 
-/* SERVER SWITCH - PREMIUM: 3x3 grid, ultra neon selected */
-.premium-theme #server-switch button {
-  background: linear-gradient(160deg, #130f4b 60%, #00eaff 100%);
-  color: #fff;
-  border: 2.2px solid #29faff;
-  border-radius: 14px;
-  font-weight: bold;
-  font-size: 20px;
-  box-shadow: 0 0 20px #00eaff44, 0 3px 16px #1036ff88 inset;
-  transition: background 0.19s, border-color 0.19s, box-shadow 0.18s, color 0.14s;
-  outline: none;
-  position: relative;
-}
-.premium-theme #server-switch button:hover:not(.selected) {
-  background: linear-gradient(180deg, #0ff4f4 10%, #1036ff 100%);
-  border-color: #faff24;
-  color: #181b2c;
-  box-shadow: 0 0 26px #faff24;
-}
-.premium-theme #server-switch button.selected, .premium-theme #server-switch button:focus {
-  background: linear-gradient(90deg, #faff24 30%, #00eaff 100%);
+.premium-theme #server-switch button.selected,
+.premium-theme #server-switch button:focus {
+  background: linear-gradient(90deg, #faff24 25%, #00eaff 100%);
   border-color: #fff900;
-  color: #182044;
-  box-shadow: 0 0 40px #faff24, 0 0 20px #00eaff inset;
+  color: #161940;
+  font-weight: bold;
+  box-shadow: 0 0 40px #faff24, 0 0 22px #00eaff, 0 0 10px #fff;
   z-index: 3;
+  outline: none;
+  filter: brightness(1.22) saturate(1.38);
+  transform: scale(1.10) rotate(-2deg);
+  animation: selected-wiggle-premium 0.35s 1;
 }
-.premium-theme #server-switch button.selected::after, .premium-theme #server-switch button:focus::after {
-  content: \" ★ PREMIUM\";
-  font-size: 1.10em;
+.premium-theme #server-switch button.selected::after,
+.premium-theme #server-switch button:focus::after {
+  content: " ★ PREMIUM";
+  font-size: 1.15em;
+  font-weight: bold;
   color: #ff16e0;
-  text-shadow: 0 0 13px #faff24, 0 0 5px #ff16e0;
-  margin-left: 6px;
+  text-shadow: 0 0 15px #faff24, 0 0 7px #ff16e0;
+  margin-left: 12px;
   vertical-align: middle;
+  letter-spacing: 1px;
+}
+
+.premium-theme #server-switch button.selected:hover,
+.premium-theme #server-switch button:focus:hover {
+  filter: brightness(1.35) drop-shadow(0 0 26px #faff24) drop-shadow(0 0 18px #00eaff);
+  transform: scale(1.12) rotate(2deg);
+}
+
+@keyframes selected-wiggle-premium {
+  0% { transform: scale(1.07) rotate(-6deg);}
+  20% { transform: scale(1.16) rotate(5deg);}
+  50% { transform: scale(1.12) rotate(-2deg);}
+  100% { transform: scale(1.10) rotate(-2deg);}
 }
 
 /* BOTTOM BAR & FULLSCREEN BUTTONS - PREMIUM */

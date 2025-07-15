@@ -402,3 +402,64 @@ html, body {
 }
 .premium-theme #bottom-bar {
   background: linear-gradient(90deg, #0e1956 10%, #00eaff 80%, #faff24 100%) !important
+
+/* Hyperbeam container fullscreen fix */
+:fullscreen, :-webkit-full-screen {
+  overflow: hidden !important;
+}
+:fullscreen #bottom-bar, :-webkit-full-screen #bottom-bar {
+  display: none !important;
+}
+:fullscreen #hyperbeam-container,
+:-webkit-full-screen #hyperbeam-container {
+  height: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+/* Server switch grid - clearly selected and 3x3 layout */
+#server-switch {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+#server-switch button {
+  padding: 12px;
+  font-family: Impact, sans-serif;
+  background: linear-gradient(to bottom, #00456e, #002b49);
+  color: #aefcff;
+  border: 2px solid #009dcf;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px #00eaff44;
+}
+
+#server-switch button:hover {
+  background: linear-gradient(to bottom, #0067a3, #00456e);
+  border-color: #0ff4f4;
+}
+
+#server-switch button.selected {
+  background: linear-gradient(to bottom, #0ff4f4, #0072a8);
+  border-color: #faff24;
+  color: #000e1a;
+  font-weight: bold;
+  box-shadow: 0 0 20px #faff24, 0 0 10px #00eaff inset;
+}
+
+#server-switch button.selected:hover {
+  background: linear-gradient(to bottom, #2dfeff, #0099cc);
+}
+
+/* Ensure visibility */
+#server-switch button.selected::after {
+  content: " (Selected)";
+  font-size: 12px;
+  color: #000e1a;
+}

@@ -585,24 +585,24 @@ html, body {
 
 /********** PREMIUM THEME OVERRIDES **********/
 .premium-theme body, .premium-theme html {
-  background: linear-gradient(120deg, #01092b, #1c227c 70%, #1ad6ff 100%) !important;
+  background: linear-gradient(120deg, #01092b, #1c227c 70%, #00eaff 100%) !important;
   color: #fff !important;
   font-family: Impact, Poppins, "Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   text-shadow: 0 0 10px #29faffcc, 0 0 2px #fff;
 }
 .premium-theme #auth-overlay {
   background: rgba(30, 40, 105, 0.98) !important;
-  box-shadow: 0 0 180px #0ff4f477 inset !important;
+  box-shadow: 0 0 180px #00eaff77 inset !important;
 }
 .premium-theme #auth-box {
   background: linear-gradient(120deg, #00eaff 0%, #1036ff 90%, #130f4b 100%) !important;
   border-radius: 28px !important;
-  box-shadow: 0 0 70px #0ff4f4cc, 0 0 12px #faff24aa !important;
-  border: 2.5px solid #faff24 !important;
+  box-shadow: 0 0 70px #0ff4f4cc, 0 0 12px #00eaffaa !important;
+  border: 2.5px solid #00eaff !important;
 }
 .premium-theme #auth-box h2 {
-  color: #faff24 !important;
-  text-shadow: 0 0 32px #faff24cc, 0 0 7px #00eaffbb !important;
+  color: #0ff4f4 !important;
+  text-shadow: 0 0 32px #0ff4f4cc, 0 0 7px #00eaffbb !important;
 }
 .premium-theme #auth-box input {
   background: #131652 !important;
@@ -612,18 +612,18 @@ html, body {
   box-shadow: 0 0 18px #00eaff99 !important;
 }
 .premium-theme #auth-box button {
-  background: linear-gradient(90deg, #faff24 0%, #00eaff 60%, #ff16e0 100%) !important;
-  color: #181b2c !important;
+  background: linear-gradient(90deg, #00eaff 0%, #1036ff 100%) !important;
+  color: #ffffff !important;
   font-weight: 900 !important;
   border-radius: 14px !important;
-  box-shadow: 0 0 44px #faff24aa, 0 0 16px #00eaffdd inset !important;
+  box-shadow: 0 0 44px #00eaffaa, 0 0 16px #00eaffdd inset !important;
   letter-spacing: 1.2px;
-  filter: brightness(1.1) drop-shadow(0 0 22px #00eaffcc);
+  filter: brightness(1.13) drop-shadow(0 0 22px #0ff4f4cc);
   text-shadow: 0 0 6px #fff4;
 }
 .premium-theme #auth-box button:hover {
-  background: linear-gradient(90deg, #faff24 10%, #00eaff 80%, #ff16e0 100%) !important;
-  filter: brightness(1.23) drop-shadow(0 0 18px #faff24cc);
+  background: linear-gradient(90deg, #00eaff 10%, #29faff 80%, #1036ff 100%) !important;
+  filter: brightness(1.25) drop-shadow(0 0 18px #00eaffcc);
 }
 .premium-theme .overlay,
 .premium-theme #minute-warning .overlay-content,
@@ -635,45 +635,45 @@ html, body {
 .premium-theme .overlay-content {
   background: linear-gradient(110deg, #1036ff 80%, #00eaff 100%) !important;
   color: #fff !important;
-  border: 2.5px solid #faff24 !important;
-  box-shadow: 0 0 50px #faff24cc, 0 0 28px #00eaffcc !important;
+  border: 2.5px solid #00eaff !important;
+  box-shadow: 0 0 50px #00eaffcc, 0 0 28px #00eaffcc !important;
 }
 .premium-theme .overlay-content h2 {
-  color: #faff24 !important;
-  text-shadow: 0 0 18px #faff24cc, 0 0 8px #00eaff88 !important;
+  color: #0ff4f4 !important;
+  text-shadow: 0 0 18px #0ff4f4cc, 0 0 8px #00eaff88 !important;
 }
 .premium-theme .overlay-content button {
-  background: linear-gradient(90deg, #faff24 0%, #00eaff 100%) !important;
+  background: linear-gradient(90deg, #00eaff 0%, #29faff 100%) !important;
   color: #001222 !important;
   font-weight: bold !important;
   border-radius: 13px !important;
-  box-shadow: 0 0 19px #faff24bb !important;
+  box-shadow: 0 0 19px #00eaffbb !important;
   text-shadow: 0 0 9px #00eaff88 !important;
 }
 .premium-theme #bottom-bar {
-  background: linear-gradient(90deg, #1036ff 15%, #00eaff 75%, #faff24 100%) !important;
+  background: linear-gradient(90deg, #1036ff 15%, #00eaff 75%, #29faff 100%) !important;
   box-shadow: 0 -4px 40px #00eaffcc, 0 0 28px #1ad1ffcc inset !important;
   border-top-left-radius: 28px !important;
   border-top-right-radius: 28px !important;
 }
 .premium-theme #signout-btn {
-  background: linear-gradient(90deg, #faff24 0%, #00eaff 100%) !important;
-  box-shadow: 0 0 38px #0ff4f4cc, 0 0 12px #faff24cc !important;
+  background: linear-gradient(90deg, #1036ff 0%, #00eaff 100%) !important;
+  box-shadow: 0 0 38px #0ff4f4cc, 0 0 12px #00eaffcc !important;
   font-weight: bold !important;
-  text-shadow: 0 0 14px #faff24bb;
-  color: #131652 !important;
+  text-shadow: 0 0 14px #00eaffbb;
+  color: #00eaff !important;
   border: none !important;
   border-radius: 13px !important;
 }
 .premium-theme #timer,
 .premium-theme #fullscreen-timer {
-  color: #faff24 !important;
-  text-shadow: 0 0 12px #00eaffcc, 0 0 5px #faff24;
+  color: #00eaff !important;
+  text-shadow: 0 0 12px #00eaffcc, 0 0 5px #29faff;
 }
 .premium-theme #bottom-bar img[alt="CVM"] {
-  filter: drop-shadow(0 0 15px #faff24cc) drop-shadow(0 0 8px #00eaffcc);
+  filter: drop-shadow(0 0 15px #00eaffcc) drop-shadow(0 0 8px #00eaffcc);
 }
 .premium-theme #copyright-text {
-  color: #fff900 !important;
-  text-shadow: 0 0 15px #faff24bb, 0 0 5px #fff;
+  color: #0ff4f4 !important;
+  text-shadow: 0 0 15px #00eaffbb, 0 0 5px #fff;
 }

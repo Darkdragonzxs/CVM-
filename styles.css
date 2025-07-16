@@ -563,6 +563,26 @@ html, body {
   cursor: pointer;
 }
 
+/* loading scren */
+#session-loader-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(120deg, #0a1532 80%, #0ff4f4 120%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 0.45s cubic-bezier(.75,0,.25,1);
+}
+#session-loader-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /********** PREMIUM THEME OVERRIDES **********/
 .premium-theme body, .premium-theme html {
   background: linear-gradient(120deg, #01092b, #1c227c 70%, #1ad6ff 100%) !important;

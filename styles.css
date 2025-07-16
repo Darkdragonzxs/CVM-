@@ -281,7 +281,7 @@ html, body {
 }
 #server-switch button.selected::after,
 #server-switch button:focus::after {
-  content: " ★ SELECTED";
+  content: " SELECTED!";
   font-size: 1.08em;
   font-weight: bold;
   color: #ffe100;
@@ -317,7 +317,7 @@ html, body {
 }
 .premium-theme #server-switch button.selected::after,
 .premium-theme #server-switch button:focus::after {
-  content: " ★ PREMIUM";
+  content: " SELECTED!";
   font-size: 1.15em;
   font-weight: bold;
   color: #ff16e0;

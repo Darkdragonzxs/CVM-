@@ -11,6 +11,31 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="description" content="Version 2.2: CVM is back, but as VOS?">
 
+  <!-- loading screen haha -->
+  <div id="session-loader-overlay" class="hidden">
+  <div style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;">
+    <img
+      id="session-loader-spinner"
+      src="spinner.gif"
+      alt="Loading..."
+      draggable="false"
+      style="width: 56px; height: 56px; user-drag: none; -webkit-user-drag: none; pointer-events: none; margin-bottom: 18px;"
+    >
+    <span style="
+      color: #0ff4f4;
+      font-family: Impact, sans-serif;
+      font-size: 22px;
+      letter-spacing: 1.3px;
+      text-shadow: 0 0 8px #0ff4f477;">
+      Loading...
+    </span>
+  </div>
+</div>
+
   <!-- —— AUTH OVERLAY —— -->
   <div id="overlay">
   <div id="auth-overlay">

@@ -111,7 +111,7 @@ function getUsername() {
     } catch {
       const e = document.getElementById('error-message');
       e.style.display = 'block';
-      e.textContent = "It's either one, you ran CVM on a proxy, two, you tried to run CVM in CVM, or three, you tried to skid (stop trying and just make your own).";
+      e.textContent = "It's either one, you ran VOS on a prox/V҉P҉N҉, two, you tried to run VOS in VOS, or three, you tried to skid (stop trying and just make your own).";
     }
   }
 
@@ -157,7 +157,7 @@ function getUsername() {
   function showSessionLoader() {
   const overlay = document.getElementById('session-loader-overlay');
   overlay.classList.remove('hidden');
-  const delay = 1850 + Math.random() * 150;
+  const delay = 4900 + Math.random() * 100;
   setTimeout(() => {
     overlay.classList.add('hidden');
   }, delay);
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const userEl   = document.getElementById("auth-username");
   const passEl   = document.getElementById("auth-password");
   const errorEl  = document.getElementById("auth-error");
-  const WORKER_BASE = "https://account.cvm.rest";
+  const WORKER_BASE = "https://vos-acc.grady.lol";
 
   let isSignup = false;
   let started  = false;
@@ -244,11 +244,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Guest access
   guestBtn.addEventListener("click", () => {
-  // 1) Clear out any previous session flags
   localStorage.removeItem("cvm_token");
   localStorage.removeItem("cvm_premium");
   localStorage.removeItem("cvm_username");
-  // 2) Then proceed to finishAuth (hides overlay and starts the app)
   finishAuth();
 });
 
@@ -286,12 +284,8 @@ localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
 
 if (isSignup) {
   finishAuth();
-  window.removeEventListener('beforeunload', handleBeforeUnload);
-      location.reload();
 } else {
   finishAuth();
-  window.removeEventListener('beforeunload', handleBeforeUnload);
-      location.reload();
 }
     } catch (err) {
       errorEl.textContent = err.message;

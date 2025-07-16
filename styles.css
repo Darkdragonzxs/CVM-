@@ -534,7 +534,7 @@ html, body {
   justify-content: center;
   opacity: 1;
   pointer-events: auto;
-  z-index: 5999;
+  z-index: 5;
   position: fixed;
   top: 8px;
   right: 10px;
@@ -542,24 +542,24 @@ html, body {
   padding: 2px 10px;
   border-radius: 5px;
   box-shadow: 0 0 8px #0ff4f477;
-  font-size: 12px;
+  font-size: 20px;
   color: #0ff4f4;
   min-width: 0;
   min-height: 0;
 }
 
 #fullscreen-timer {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: bold;
   color: #0ff4f4;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 #toggle-timer-btn {
   background: none;
   border: none;
   color: #0ff4f4;
-  font-size: 15px;
-  margin-left: 6px;
+  font-size: 20px;
+  margin-left: 8px;
   cursor: pointer;
 }
 

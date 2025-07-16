@@ -149,7 +149,7 @@ function getUsername() {
     document.getElementById('bottom-bar').style.display = inFS ? 'none' : 'flex';
     document.getElementById('hyperbeam-container')
             .classList.toggle('fullscreen-mode', inFS);
-    fsWrapper.style.display = inFS ? 'flex' : 'none';
+    fsWrapper.classList.toggle('fullscreen-visible', inFS);
     if (inFS) { fsTimer.style.display = 'inline'; toggleBtn.textContent = '<'; }
   });
 

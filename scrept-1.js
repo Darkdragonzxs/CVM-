@@ -286,8 +286,12 @@ localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
 
 if (isSignup) {
   finishAuth();
+  window.removeEventListener('beforeunload', handleBeforeUnload);
+      location.reload();
 } else {
   finishAuth();
+  window.removeEventListener('beforeunload', handleBeforeUnload);
+      location.reload();
 }
     } catch (err) {
       errorEl.textContent = err.message;

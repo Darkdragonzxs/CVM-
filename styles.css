@@ -1,6 +1,7 @@
 html, body {
   font-family: Impact, Poppins, "Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: linear-gradient(120deg, #050f28 0%, #0c1d34 70%, #02114b 100%);
+  background-color: black;
   color: #aefcff;
   margin: 0;
   height: 100%;

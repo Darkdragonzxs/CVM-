@@ -95,7 +95,6 @@ function getUsername() {
   });
 
   async function start() {
-    setTimeout(() => document.getElementById('black-notif').classList.add('active'), 5000);
     try {
       const res = await fetch(serverUrl, {
         method: "POST",

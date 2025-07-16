@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    updateAuthUI(); // Call it once after page load
+    updateAuthUI();
   });
 
    okButton.addEventListener("click", () => {
@@ -107,15 +107,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Function to check if user is premium
   function isUserPremium() {
     const token = localStorage.getItem("cvm_token");
     if (!token) {
-      console.log("No token found in localStorage, user is not premium.");
+      // console.log("No token found in localStorage, user is not premium.");
       return false;
     }
     const isPremium = localStorage.getItem("cvm_premium") === "1";
-    console.log(`Premium status: ${isPremium}`);
+    // console.log(`Premium status: ${isPremium}`);
     return isPremium;
   }
 
@@ -130,21 +129,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to get username
   function getUsername() {
     const username = localStorage.getItem("cvm_username") || "User";
-    console.log(`Username retrieved: "${username}"`);
+    // console.log(`Username retrieved: "${username}"`);
     return username;
   }
 
   // Select the overlay-content container
   const overlayContent = document.querySelector("#warning .overlay-content");
   if (!overlayContent) {
-    console.log("No overlay-content found in #warning, cannot proceed.");
+    // console.log("No overlay-content found in #warning, cannot proceed.");
     return;
   }
 
-  // Select the h2 element
   const h2 = overlayContent.querySelector("h2");
   if (!h2) {
-    console.log("No h2 found in overlay-content, cannot add greeting.");
+    // console.log("No h2 found in overlay-content, cannot add greeting.");
     return;
   }
 
@@ -165,10 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
       h2.insertAdjacentElement("afterend", greeting);
       console.log(`Created greeting: "${greetingText}"`);
     } else {
-      console.log(`Greeting already exists with ID user-greeting: "${existingGreeting.textContent}"`);
+      // console.log(`Greeting already exists with ID user-greeting: "${existingGreeting.textContent}"`);
     }
   } else {
-    console.log("No username in localStorage (guest user), skipping greeting creation.");
+    // console.log("No username in localStorage (guest user), skipping greeting creation.");
   }
 
   // Step 2: Remove duplicates for all users (delayed to catch late additions)
@@ -176,12 +174,12 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Checking for duplicate paragraphs in overlay-content.");
     const paragraphs = overlayContent.querySelectorAll("p");
     if (paragraphs.length === 0) {
-      console.log("No <p> elements found in overlay-content, nothing to check.");
+      // console.log("No <p> elements found in overlay-content, nothing to check.");
       return;
     }
 
     // Log all paragraphs before processing
-    console.log("Paragraphs before duplicate removal:");
+    // console.log("Paragraphs before duplicate removal:");
     paragraphs.forEach((p, index) => {
       console.log(`Index ${index}: "${p.textContent}" (ID: ${p.id || "none"})`);
     });
@@ -190,15 +188,15 @@ document.addEventListener("DOMContentLoaded", () => {
     paragraphs.forEach((p, index) => {
       const text = p.textContent.trim().toLowerCase();
       if (seenText.has(text)) {
-        console.log(`Removing duplicate paragraph at index ${index}: "${p.textContent}" (ID: ${p.id || "none"})`);
+        // console.log(`Removing duplicate paragraph at index ${index}: "${p.textContent}" (ID: ${p.id || "none"})`);
         p.remove();
       } else {
         seenText.add(text);
-        console.log(`Keeping paragraph at index ${index}: "${p.textContent}" (ID: ${p.id || "none"})`);
+        // console.log(`Keeping paragraph at index ${index}: "${p.textContent}" (ID: ${p.id || "none"})`);
       }
     });
 
-    console.log(`Duplicate check complete. Total paragraphs after processing: ${overlayContent.querySelectorAll("p").length}`);
+    // console.log(`Duplicate check complete. Total paragraphs after processing: ${overlayContent.querySelectorAll("p").length}`);
   }, 100); // Small delay to allow other DOM modifications
 });
 

@@ -351,7 +351,7 @@ html, body {
 /********** HYPERBEAM CONTAINER & ERRORS **********/
 #hyperbeam-container {
   width: 100%;
-  height: calc(100vh - 50px);
+  height: 100vh;
   border: 4px solid;
   border-image: linear-gradient(to bottom, #1e2a56, #0ff4f4 90%, #051848 100%) 1;
   background-color: #020b1c;

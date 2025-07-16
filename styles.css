@@ -513,49 +513,18 @@ html, body {
 /********** FULLSCREEN TIMER (animation and visibility) **********/
 #fullscreen-timer-wrapper {
   display: flex;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.33s cubic-bezier(.75,0,.25,1);
-  z-index: 0;
-}
-.fullscreen-visible#fullscreen-timer-wrapper {
   opacity: 1;
-  pointer-events: all;
-  z-index: 10003;
-}
-:fullscreen #fullscreen-timer-wrapper,
-:-webkit-full-screen #fullscreen-timer-wrapper {
-  opacity: 1 !important;
-  pointer-events: all !important;
-  z-index: 10003 !important;
-}
-:not(:fullscreen) #fullscreen-timer-wrapper,
-:not(:-webkit-full-screen) #fullscreen-timer-wrapper {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  z-index: 0 !important;
-}
-:fullscreen #fullscreen-timer,
-:-webkit-full-screen #fullscreen-timer {
-  display: inline !important;
-}
-:fullscreen #bottom-bar,
-:-webkit-full-screen #bottom-bar {
-  display: none !important;
-}
-
-#fullscreen-timer {
-  font-size: 30px; 
-  font-weight: bold; 
+  pointer-events: auto;
+  z-index: 1;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(10, 20, 40, 0.93);
+  padding: 10px 24px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #0ff4f4aa;
+  font-size: 22px;
   color: #0ff4f4;
-}
-#toggle-timer-btn {
-  background: none;
-  border: none;
-  color: #0ff4f4;
-  font-size: 25px;
-  margin-left: 6px;
-  cursor: pointer;
 }
 /********** PREMIUM THEME OVERRIDES **********/
 .premium-theme body, .premium-theme html {

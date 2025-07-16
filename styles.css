@@ -526,6 +526,20 @@ html, body {
   font-size: 22px;
   color: #0ff4f4;
 }
+#fullscreen-timer {
+  font-size: 30px; 
+  font-weight: bold; 
+  color: #0ff4f4;
+}
+#toggle-timer-btn {
+  background: none;
+  border: none;
+  color: #0ff4f4;
+  font-size: 25px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
 /********** PREMIUM THEME OVERRIDES **********/
 .premium-theme body, .premium-theme html {
   background: linear-gradient(120deg, #01092b, #1c227c 70%, #1ad6ff 100%) !important;

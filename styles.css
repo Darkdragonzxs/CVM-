@@ -268,11 +268,11 @@ html, body {
 }
 #server-switch button.selected,
 #server-switch button:focus {
-  background: linear-gradient(90deg, #0ff4f4 30%, #ffe100 120%);
-  border-color: #ffe100;
+  background: linear-gradient(90deg, #0ff4f4 30%, #1DBEBE 120%);
+  border-color: #0381FF;
   color: #142031;
   font-weight: bold;
-  box-shadow: 0 0 30px #ffe100, 0 0 16px #0ff4f4 inset, 0 0 8px #fff;
+  box-shadow: 0 0 30px #4FB9FF, 0 0 16px #0199FF inset, 0 0 8px #fff;
   z-index: 2;
   outline: none;
   filter: brightness(1.15) saturate(1.25);
@@ -285,14 +285,14 @@ html, body {
   font-size: 1.08em;
   font-weight: bold;
   color: #ffe100;
-  text-shadow: 0 0 10px #ffe100, 0 0 4px #0ff4f4;
+  text-shadow: 0 0 10px #077BC7, 0 0 4px #43A5E5;
   margin-left: 10px;
   vertical-align: middle;
   letter-spacing: 0.5px;
 }
 #server-switch button.selected:hover,
 #server-switch button:focus:hover {
-  filter: brightness(1.22) drop-shadow(0 0 16px #ffe100);
+  filter: brightness(1.22) drop-shadow(0 0 16px #5283A3);
   transform: scale(1.09) rotate(3deg);
   transition: filter 0.13s, transform 0.13s;
 }
@@ -304,11 +304,11 @@ html, body {
 }
 .premium-theme #server-switch button.selected,
 .premium-theme #server-switch button:focus {
-  background: linear-gradient(90deg, #faff24 25%, #00eaff 100%);
-  border-color: #fff900;
+  background: linear-gradient(90deg, #2453B2 25%, #4573CE 100%);
+  border-color: #94B5F7;
   color: #161940;
   font-weight: bold;
-  box-shadow: 0 0 40px #faff24, 0 0 22px #00eaff, 0 0 10px #fff;
+  box-shadow: 0 0 40px #64728E, 0 0 22px #7B8FB6, 0 0 10px #fff;
   z-index: 3;
   outline: none;
   filter: brightness(1.22) saturate(1.38);
@@ -320,15 +320,15 @@ html, body {
   content: " SELECTED!";
   font-size: 1.15em;
   font-weight: bold;
-  color: #ff16e0;
-  text-shadow: 0 0 15px #faff24, 0 0 7px #ff16e0;
+  color: #1C99BF;
+  text-shadow: 0 0 15px #5C8CC4, 0 0 7px #31649F;
   margin-left: 12px;
   vertical-align: middle;
   letter-spacing: 1px;
 }
 .premium-theme #server-switch button.selected:hover,
 .premium-theme #server-switch button:focus:hover {
-  filter: brightness(1.35) drop-shadow(0 0 26px #faff24) drop-shadow(0 0 18px #00eaff);
+  filter: brightness(1.35) drop-shadow(0 0 26px #7CB2F0) drop-shadow(0 0 18px #7294BA);
   transform: scale(1.12) rotate(2deg);
 }
 @keyframes selected-wiggle-premium {

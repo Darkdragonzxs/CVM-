@@ -153,8 +153,19 @@ function getUsername() {
     if (inFS) { fsTimer.style.display = 'inline'; toggleBtn.textContent = '<'; }
   });
 
+  // ======== load screen ========
+  function showSessionLoader() {
+  const overlay = document.getElementById('session-loader-overlay');
+  overlay.classList.remove('hidden');
+  const delay = 1850 + Math.random() * 150;
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+  }, delay);
+}
+
   // ======== timer ========
   function startTimer() {
+    showSessionLoader();
     let t;
 if (isUserPremium()) {
   t = 40 * 60; // Premium user

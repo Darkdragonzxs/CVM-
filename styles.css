@@ -515,7 +515,7 @@ html, body {
   display: flex;
   opacity: 1;
   pointer-events: auto;
-  z-index: 1;
+  z-index: 9999;
   position: fixed;
   top: 20px;
   right: 20px;

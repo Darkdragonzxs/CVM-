@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Step 2: Remove duplicates for all users (delayed to catch late additions)
   setTimeout(() => {
-    console.log("Checking for duplicate paragraphs in overlay-content.");
+    // console.log("Checking for duplicate paragraphs in overlay-content.");
     const paragraphs = overlayContent.querySelectorAll("p");
     if (paragraphs.length === 0) {
       // console.log("No <p> elements found in overlay-content, nothing to check.");
@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Log all paragraphs before processing
     // console.log("Paragraphs before duplicate removal:");
     paragraphs.forEach((p, index) => {
-      console.log(`Index ${index}: "${p.textContent}" (ID: ${p.id || "none"})`);
+      // console.log(`Index ${index}: "${p.textContent}" (ID: ${p.id || "none"})`);
     });
 
     const seenText = new Set();

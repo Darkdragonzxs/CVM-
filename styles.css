@@ -512,11 +512,11 @@ html, body {
 
 /********** FULLSCREEN TIMER (animation and visibility) **********/
 #fullscreen-timer-wrapper {
+  display: flex;
   opacity: 0;
   pointer-events: none;
-  z-index: 0;
   transition: opacity 0.33s cubic-bezier(.75,0,.25,1);
-  display: flex; /* always in DOM for fade! */
+  z-index: 0;
 }
 .fullscreen-visible#fullscreen-timer-wrapper {
   opacity: 1;
@@ -528,7 +528,6 @@ html, body {
   opacity: 1 !important;
   pointer-events: all !important;
   z-index: 10003 !important;
-  transition: opacity 0.33s cubic-bezier(.75,0,.25,1);
 }
 :not(:fullscreen) #fullscreen-timer-wrapper,
 :not(:-webkit-full-screen) #fullscreen-timer-wrapper {

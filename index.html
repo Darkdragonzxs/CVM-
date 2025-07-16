@@ -137,6 +137,26 @@
   <div id="error-message"></div>
 
   <!-- NO MORE!!1! -->
+  <div id="bottom-bar"
+  style="
+    opacity:0;
+    pointer-events:none;
+    position:absolute;
+    left:-9999px;
+    top:-9999px;
+    width:100%;
+    height:50px;
+    z-index:0;
+    user-select:none;
+  ">
+  <span id="timer" style="opacity:0; pointer-events:none; user-select:none;">00:00</span>
+  <button id="fullscreen-btn" style="opacity:0; pointer-events:none; user-select:none;">
+    <img src="fullscreen-icon.png" alt="Fullscreen" style="opacity:0; pointer-events:none; user-select:none;">
+  </button>
+  <button id="signout-btn" style="opacity:0; pointer-events:none; user-select:none;">Sign Out</button>
+  <span id="copyright-text" style="opacity:0; pointer-events:none; user-select:none;">© 2024 CVM</span>
+  <img src="logo-cvm.png" alt="CVM" style="opacity:0; pointer-events:none; user-select:none;">
+</div>
 
   <!-- Fullscreen timer + toggle -->
   <div id="fullscreen-timer-wrapper">

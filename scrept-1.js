@@ -275,10 +275,8 @@ localStorage.setItem("cvm_premium", data.premium ? "1" : "0");
 
 if (isSignup) {
   finishAuth();
-  console.log("Becoming VOS!")
 } else {
   finishAuth();
-  console.log("Becoming VOS!")
 }
     } catch (err) {
       errorEl.textContent = err.message;

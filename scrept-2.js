@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
       greeting.style.fontWeight = "bold";
       greeting.style.marginTop = "8px";
       h2.insertAdjacentElement("afterend", greeting);
-      console.log(`"${greetingText}"`);
+      console.log(`${greetingText}`);
     } else {
       // console.log(`Greeting already exists with ID user-greeting: "${existingGreeting.textContent}"`);
     }

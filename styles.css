@@ -373,7 +373,7 @@ html, body {
   border-image: linear-gradient(to bottom, #1e2a56, #0ff4f4 90%, #051848 100%) 1;
   background-color: #020b1c;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: hidden !important;
   box-shadow: 0 0 44px #00eaff22 inset;
   position: relative;
   z-index: 2;

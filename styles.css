@@ -340,6 +340,7 @@ html, body {
   box-shadow: 0 0 12px #00eaff99;
   font-size: 17px;
   padding: 13px 24px;
+  transition: background 0.2s, box-shadow 0.22s, filter 0.19s, transform 0.18s;
 }
 #minute-warning button:hover, #black-notif button:hover, #black-alert button:hover {
   background: linear-gradient(90deg, #3cfffe 20%, #27bbff 80%);
@@ -359,6 +360,19 @@ html, body {
   box-shadow: 0 0 44px #00eaff22 inset;
   position: relative;
   z-index: 2;
+  transition:
+    width 0.4s cubic-bezier(.75,0,.25,1),
+    height 0.4s cubic-bezier(.75,0,.25,1),
+    border-radius 0.3s cubic-bezier(.75,0,.25,1),
+    box-shadow 0.3s cubic-bezier(.75,0,.25,1),
+    background 0.3s cubic-bezier(.75,0,.25,1),
+    left 0.4s cubic-bezier(.75,0,.25,1),
+    top 0.4s cubic-bezier(.75,0,.25,1),
+    right 0.4s cubic-bezier(.75,0,.25,1),
+    bottom 0.4s cubic-bezier(.75,0,.25,1),
+    margin 0.3s cubic-bezier(.75,0,.25,1),
+    padding 0.3s cubic-bezier(.75,0,.25,1),
+    position 0.25s cubic-bezier(.75,0,.25,1);
 }
 :fullscreen #hyperbeam-container,
 :-webkit-full-screen #hyperbeam-container {
@@ -378,7 +392,6 @@ html, body {
   z-index: 10001;
   overflow: hidden;
   display: block;
-  /* SMOOTH ANIMATION for fullscreen in/out */
   transition:
     width 0.4s cubic-bezier(.75,0,.25,1),
     height 0.4s cubic-bezier(.75,0,.25,1),
@@ -393,7 +406,6 @@ html, body {
     padding 0.3s cubic-bezier(.75,0,.25,1),
     position 0.25s cubic-bezier(.75,0,.25,1);
 }
-
 :fullscreen #hyperbeam-container iframe,
 :-webkit-full-screen #hyperbeam-container iframe {
   width: 100vw;
@@ -408,7 +420,6 @@ html, body {
   top: 0; left: 0;
   background: #020b1c;
   z-index: 10002;
-  /* Smooth animation for iframe too */
   transition:
     width 0.4s cubic-bezier(.75,0,.25,1),
     height 0.4s cubic-bezier(.75,0,.25,1),
@@ -416,15 +427,6 @@ html, body {
     top 0.4s cubic-bezier(.75,0,.25,1),
     background 0.25s cubic-bezier(.75,0,.25,1),
     position 0.25s cubic-bezier(.75,0,.25,1);
-}
-
-:fullscreen #fullscreen-timer-wrapper,
-:-webkit-full-screen #fullscreen-timer-wrapper {
-  display: flex !important;
-  opacity: 1 !important;
-  pointer-events: all !important;
-  z-index: 10003 !important;
-  transition: opacity 0.2s cubic-bezier(.75,0,.25,1);
 }
 
 #error-message {
@@ -503,11 +505,21 @@ html, body {
   margin-right: 8px;
   filter: drop-shadow(0 0 6px #00eaffcc);
 }
+
+/********** FULLSCREEN TIMER (animation and visibility) **********/
 #fullscreen-timer-wrapper {
   display: none;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s cubic-bezier(.75,0,.25,1);
+  transition: opacity 0.32s cubic-bezier(.75,0,.25,1);
+}
+:fullscreen #fullscreen-timer-wrapper,
+:-webkit-full-screen #fullscreen-timer-wrapper {
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
+  z-index: 10003 !important;
+  transition: opacity 0.32s cubic-bezier(.75,0,.25,1);
 }
 :fullscreen #fullscreen-timer,
 :-webkit-full-screen #fullscreen-timer {

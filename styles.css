@@ -12,6 +12,23 @@ html, body {
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 1.2vw;
+}
+
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: cyan;
+  border-radius: 0.6vw;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00e6e6;
+}
+
 /********** AUTH OVERLAY **********/
 #overlay {
   position: fixed;
@@ -523,11 +540,11 @@ html, body {
   padding: 10px 24px;
   border-radius: 10px;
   box-shadow: 0 0 20px #0ff4f4aa;
-  font-size: 22px;
+  font-size: 10px;
   color: #0ff4f4;
 }
 #fullscreen-timer {
-  font-size: 30px; 
+  font-size: 12px; 
   font-weight: bold; 
   color: #0ff4f4;
 }

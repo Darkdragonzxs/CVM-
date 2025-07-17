@@ -169,7 +169,7 @@ function getUsername() {
 if (isUserPremium()) {
   t = 40 * 60; // Premium user
 } else if (localStorage.getItem("cvm_token")) {
-  t = 30 * 60; // Logged-in (non-premium)
+  t = 20 * 60; // Logged-in (non-premium)
 } else {
   t = 20 * 60; // Guest (no login at all)
 }
